@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Book extends Model {
     /**
@@ -12,12 +10,12 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.belongsTo(models.BookAuthor, {
         foreignKey: 'author',
-        onDelete: 'SET NULL'
-      })
+        onDelete: 'SET NULL',
+      });
       this.belongsTo(models.Category, {
-        foreignKey :'category',
-        onDelete: 'SET NULL'
-      })
+        foreignKey: 'category',
+        onDelete: 'SET NULL',
+      });
     }
   }
   Book.init({

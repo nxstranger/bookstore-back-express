@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class BookAuthor extends Model {
     /**
@@ -13,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.hasOne(models.Book, {
         foreignKey: 'author',
-        onDelete: 'SET NULL'
-      })
+        onDelete: 'SET NULL',
+      });
     }
   }
   BookAuthor.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
   }, {
     timestamps: false,
     sequelize,

@@ -1,5 +1,5 @@
-'use strict';
 const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class JwtUser extends Model {
     /**
@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       JwtUser.hasOne(models.User, {
         foreignKey: 'user',
         allowNull: false,
-        onDelete: 'CASCADE'
-      })
+        onDelete: 'CASCADE',
+      });
     }
   }
   JwtUser.init({

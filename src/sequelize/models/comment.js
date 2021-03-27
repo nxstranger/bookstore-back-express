@@ -1,7 +1,4 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Comment extends Model {
@@ -14,19 +11,19 @@ module.exports = (sequelize, DataTypes) => {
       Comment.hasOne(models.User, {
         foreignKey: 'userId',
         allowNull: false,
-        onDelete: 'CASCADE'
-      })
+        onDelete: 'CASCADE',
+      });
       Comment.hasOne(models.Book, {
-        foreignKey:'bookId',
+        foreignKey: 'bookId',
         allowNull: false,
-        onDelete: 'CASCADE'
-      })
+        onDelete: 'CASCADE',
+      });
     }
   }
   Comment.init({
     text: DataTypes.STRING,
     userId: DataTypes.INTEGER,
-    bookId: DataTypes.INTEGER
+    bookId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Comment',

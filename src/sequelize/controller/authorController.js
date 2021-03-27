@@ -1,14 +1,10 @@
-'use strict'
-
 const dbORM = require('../models/index');
-const BookAuthor = dbORM.BookAuthor;
 
+const { BookAuthor } = dbORM;
 
-module.exports.findOneById = (id) => {
-  return new Promise((success)=>{
-    BookAuthor.findByPk(id)
-      .then(data => {
-        success(data)
-      })
-  });
-};
+module.exports.findOneById = (id) => new Promise((success) => {
+  BookAuthor.findByPk(id)
+    .then((data) => {
+      success(data);
+    });
+});

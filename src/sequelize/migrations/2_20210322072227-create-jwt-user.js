@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('JwtUsers', {
@@ -7,23 +5,23 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       user: {
-          type: Sequelize.INTEGER,
-          unique: true,
-          references: {
-                model: 'Users',
-                key: 'id',
-            },
-          onDelete: 'CASCADE'
+        type: Sequelize.INTEGER,
+        unique: true,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
       },
       refreshToken: {
-        type: Sequelize.STRING
-      }
+        type: Sequelize.STRING,
+      },
     });
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.dropTable('JwtUsers');
-  }
+  },
 };

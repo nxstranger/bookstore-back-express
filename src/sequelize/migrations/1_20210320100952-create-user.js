@@ -1,4 +1,3 @@
-'use strict';
 const { DataTypes } = require('sequelize');
 
 module.exports = {
@@ -8,7 +7,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       name: {
         type: Sequelize.STRING,
@@ -17,34 +16,34 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
       },
       avatar: {
         type: DataTypes.STRING,
-        null: true
+        null: true,
       },
       passwordHash: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       passwordSalt: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       dateOfBirthday: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATEONLY,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.dropTable('Users');
-  }
+  },
 };

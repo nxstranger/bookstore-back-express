@@ -7,16 +7,16 @@ const authorsArray = [
 ];
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface) => {
     await authorsArray.forEach((userObj) => {
       const authorObj = {
         name: userObj,
       };
-      queryInterface.bulkInsert('BookAuthors',[authorObj]);
+      queryInterface.bulkInsert('BookAuthors', [authorObj]);
     });
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.bulkDelete('BookAuthors', null, {});
   },
 };

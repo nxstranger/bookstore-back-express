@@ -2,7 +2,7 @@ require('dotenv').config();
 
 module.exports = {
   development: {
-    username: 'user-bookstore',
+    username: 'bookstore',
     password: 'bookstore',
     database: 'bookstore',
     host: '127.0.0.1',

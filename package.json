@@ -17,7 +17,8 @@
     "sequelize-cli": "^6.2.0"
   },
   "scripts": {
-    "start": "node ./src/express/server.js"
+    "start": "node ./src/express/server.js",
+    "devel": "nodemon ./src/express/server.js"
   },
   "devDependencies": {
     "eslint": "^7.22.0",

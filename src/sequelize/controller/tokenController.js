@@ -2,22 +2,22 @@ const dbORM = require('../models/index');
 
 const dbToken = dbORM.JwtUser;
 
-module.exports.create = (user, response) => new Promise((success) => {
+module.exports.create = (userId, response) => new Promise((success) => {
   dbToken.create(
-    { user },
+    { userId },
   )
-    .then(() => { success(); })
-    .catch(() => response.status(500).json({ message: ' refresh token write to db' }));
+    .then(() => success())
+    .catch(() => response.status(500).json({ message: 'refresh token write to db' }));
 });
 
-module.exports.setToken = (userid, token, response) => new Promise((success) => {
-  dbToken.update({ refreshToken: token }, { where: { user: userid } })
+module.exports.setToken = (userId, token, response) => new Promise((success) => {
+  dbToken.update({ refreshToken: token }, { where: { userId } })
     .then(() => success({ message: 'updated' }))
     .catch((err) => response.status(500).json({ message: err }));
 });
 
 module.exports.findToken = (userId, response) => new Promise((success) => {
-  dbToken.findOne({ where: { user: userId } })
+  dbToken.findOne({ where: { userId } })
     .then((data) => success(data))
-    .catch((err) => response.status(500).json('error when find token' || err));
+    .catch((err) => response.status(500).json({ message: 'error when find token' || err }));
 });

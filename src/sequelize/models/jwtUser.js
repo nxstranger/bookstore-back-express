@@ -8,18 +8,14 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // JwtUser.hasOne(models.User, {
-      //   foreignKey: { id: 'id', allowNull: true, hooks:true},
-      // })
-      JwtUser.hasOne(models.User, {
-        foreignKey: 'user',
-        allowNull: false,
+      this.belongsTo(models.User, {
+        foreignKey: 'userId',
         onDelete: 'CASCADE',
       });
     }
   }
   JwtUser.init({
-    user: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER,
     refreshToken: DataTypes.STRING,
   }, {
     timestamps: false,

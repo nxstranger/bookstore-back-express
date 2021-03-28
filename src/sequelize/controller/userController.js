@@ -13,26 +13,26 @@ module.exports.create = (userObject) => {
     password: userObject.password,
   };
 
-  return new Promise((success) => {
+  return new Promise((success, reject) => {
     User.create(user)
       .then((data) => TokenOrm.create(data.id)
         .then(() => success(data)))
-      .catch(() => console.log('UserController create error'));
+      .catch((err) => reject(err || 'Not created'));
   });
 };
 
-module.exports.findAll = () => new Promise((success) => {
+module.exports.findAll = () => new Promise((success, reject) => {
   User.findAll({ attributes: showedFields })
     .then((data) => success(data))
-    .catch(() => console.log('UserController findAll error'));
+    .catch((err) => reject(Error(err.message || 'UserController findAll error')));
 });
 
-module.exports.findOneById = (id) => new Promise((success) => {
+module.exports.findOneById = (id) => new Promise((success, reject) => {
   User.findByPk(id, { attributes: showedFields })
     .then((data) => {
       success(data);
     })
-    .catch(() => console.log('UserController findById error'));
+    .catch((err) => reject(Error(err.message || 'UserController findById error')));
 });
 
 module.exports.update = (userData, id) => new Promise((success, reject) => {
@@ -41,14 +41,14 @@ module.exports.update = (userData, id) => new Promise((success, reject) => {
       if (num[0] > 0) {
         success();
       } else {
-        reject();
+        reject(Error('Not updated'));
       }
     })
-    .catch(() => console.log('UserController update error'));
+    .catch((err) => reject(Error(err.message || 'Update error')));
 });
 
-module.exports.delete = (id) => new Promise((success) => {
+module.exports.delete = (id) => new Promise((success, reject) => {
   User.destroy({ where: { id } })
     .then((num) => success(num))
-    .catch(() => console.log('UserController update error'));
+    .catch((err) => reject(Error(err.message || 'UserController delete error')));
 });

@@ -21,7 +21,7 @@ module.exports.create = (req, res) => {
       },
     ))
     .catch((err) => {
-      res.status(err.code).json({ message: err.message });
+      res.status(400).json({ message: err.message });
     });
 };
 
@@ -31,47 +31,54 @@ module.exports.findAll = (req, res) => {
       res.json(data);
     })
     .catch((err) => {
-      res.status(err.code).json({ message: err.message });
+      res.status(400).json({ message: err.message });
     });
 };
 
 module.exports.findOneById = (req, res) => {
   const { id } = req.params;
-
   ormUserController.findOneById(id)
     .then((data) => res.status(200).json(data))
     .catch((err) => {
-      res.status(err.code).json({ message: err.message });
+      res.status(400).json({ message: err.message });
     });
 };
 
 module.exports.update = (req, res) => {
   const { id } = req.params;
   const allowedFields = {};
+  // let interruptUpdate = false;
+  // eslint-disable-next-line no-restricted-syntax
   for (const [field, value] of Object.entries(req.body)) {
     if (updateAllowedFields.includes(field)) {
       allowedFields[field] = value;
     } else {
-      res.send({ message: 'update error, wrong data' });
+      res.status(400).json({ message: 'update error, wrong data' });
       return;
     }
   }
-  if (allowedFields.email) {
-    userInputValidator.userEmailExist(req, res)
-      .catch((err) => {
-        res.status(err.code).json({ message: err.message });
-      });
-  }
-
+  console.log('0000000000');
+  // if (allowedFields.email) {
+  //   userInputValidator.userEmailExist(req)
+  //     .catch((err) => {
+  //       console.log('111111111');
+  //       interruptUpdate = true;
+  //       res.status(400).json({ message: err.message });
+  //     });
+  // }
+  // if (interruptUpdate) return;
+  console.log('2222222');
   ormUserController.update(allowedFields, id)
     .then(() => {
+      console.log('3333333333');
       res.status(200).json({ message: 'updated' });
     },
-    () => {
-      res.status(204).json();
+    (err) => {
+      res.status(400).json({ message: err.message });
     })
     .catch((err) => {
-      res.status(err.code).json({ message: err.message });
+      console.log('555555555555');
+      res.status(400).json({ message: err.message });
     });
 };
 
@@ -81,6 +88,6 @@ module.exports.delete = (req, res) => {
     .then(() => res.status(200).json({ message: 'deleted' }),
       () => res.status(200).json({ message: ' not deleted' }))
     .catch((err) => {
-      res.status(err.code).json({ message: err.message });
+      res.status(400).json({ message: err.message });
     });
 };

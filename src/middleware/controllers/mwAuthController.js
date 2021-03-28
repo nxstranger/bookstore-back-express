@@ -32,27 +32,23 @@ module.exports.login = (req, res) => {
           refreshToken.length,
         );
         dbToken.setToken(user.id, tokenTail)
-          .then(
-            res.status(200).json({ access: `Bearer ${accessToken}`, refresh: `Bearer ${refreshToken}`, id: user.id }),
-          );
+          .then(() => res.status(200).json({ access: `Bearer ${accessToken}`, refresh: `Bearer ${refreshToken}`, id: user.id }))
+          .catch((err) => res.status(500).json({ message: err.message || 'Internal server error.' }));
       } else {
         res.status(401).json({ message: 'wrong password' });
       }
     })
     .catch((err) => {
-      res.status(500).json({
-        message:
-          err.message || 'Internal server error.',
-      });
+      res.status(500).json({ message: err.message || 'Internal server error.' });
     });
 };
 
 module.exports.register = (req, res) => {
   newUserValidator.validateRegisterFieldsNotEmpty(req, res)
     .then(() => newUserValidator.validateRegisterFieldsData(req, res))
-    .then(() => newUserValidator.userEmailExist(req, res))
+    .then(() => newUserValidator.userEmailExist(req))
     .then(() => mwUserController.create(req, res))
-    .catch((err) => res.status(err.code).json({ message: err.message }));
+    .catch((err) => res.status(400).json({ message: err.message }));
 };
 
 module.exports.refreshToken = (req, res) => {
@@ -66,14 +62,13 @@ module.exports.refreshToken = (req, res) => {
     .then((userid) => dbToken.findToken(userid, res))
     .then((data) => {
       if (data.refreshToken === tokenTail) {
-        const accessToken = jwtUtils.makeJwtAccessToken(data.user);
-        const refreshToken = jwtUtils.makeJwtRefreshToken(data.user);
+        const accessToken = jwtUtils.makeJwtAccessToken(data.userId);
+        const refreshToken = jwtUtils.makeJwtRefreshToken(data.userId);
         const newRefreshTokenTail = refreshToken.slice(
           refreshToken.length - tokenTailLength,
           refreshToken.length,
         );
-
-        dbToken.setToken(data.user, newRefreshTokenTail, res)
+        dbToken.setToken(data.userId, newRefreshTokenTail, res)
           .then(() => res.status(200).json({
             access: `Bearer ${accessToken}`,
             refresh: `Bearer ${refreshToken}`,

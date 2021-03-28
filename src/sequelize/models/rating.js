@@ -8,15 +8,13 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Rating.hasOne(models.User, {
+      Rating.belongsTo(models.User, {
         foreignKey: 'userId',
-        allowNull: false,
-        onDelete: 'CASCADE',
+        onDelete: 'SET NULL',
       });
-      Rating.hasOne(models.Book, {
+      Rating.belongsTo(models.Book, {
         foreignKey: 'bookId',
-        allowNull: false,
-        onDelete: 'CASCADE',
+        onDelete: 'SET NULL',
       });
     }
   }

@@ -11,7 +11,9 @@ app.use(cors(corsOptions));
 
 const dbORM = require('../sequelize/models/index');
 
-dbORM.sequelize.sync()
+dbORM.sequelize.sync({
+  force: (process.env.NODE_ENV !== 'production'),
+})
   // eslint-disable-next-line no-console
   .then(() => console.log('db sync success'))
   // eslint-disable-next-line no-console
@@ -37,6 +39,6 @@ require('./routers/user.router')(app);
 
 const PORT = (process.env.NODE_ENV === 'production') ? process.env.SERVER_PORT : 3000;
 app.listen(PORT, () => {
-    // eslint-disable-next-line no-console
+  // eslint-disable-next-line no-console
   console.log(`Server is running on port ${PORT}.`);
 });

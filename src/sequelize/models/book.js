@@ -14,7 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       });
       this.belongsTo(models.Category, {
         foreignKey: 'category',
-        onDelete: 'SET NULL',
+        onDelete: 'CASCADE',
+      });
+      this.hasMany(models.Rating, {
+        foreignKey: 'bookId',
       });
     }
   }
@@ -25,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     category: DataTypes.INTEGER,
     author: DataTypes.INTEGER,
+
   }, {
     sequelize,
     modelName: 'Book',

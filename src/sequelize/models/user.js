@@ -10,17 +10,34 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    static associate(models) {
+      this.hasOne(models.JwtUser, {
+        foreignKey: 'userId',
+        allowNull: false,
+      });
+      this.hasMany(models.Rating, {
+        foreignKey: 'userid',
+        allowNull: false,
+        onDelete: 'CASCADE',
+      });
+      this.hasMany(models.Comment, {
+        foreignKey: 'userid',
+        allowNull: false,
+        onDelete: 'CASCADE',
+      });
+    }
   }
   User.init({
     name: {
       type: DataTypes.STRING,
       validate: {
-        len: [5, 255],
+        len: [1, 255],
         is: /^([a-z]+)|([а-я]+)$/i,
       },
     },
     email: {
       type: DataTypes.STRING,
+      unique: true,
       validate: {
         isEmail: true,
       },

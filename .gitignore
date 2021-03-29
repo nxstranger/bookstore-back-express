@@ -15,8 +15,8 @@ todo.txt
 # production
 /build
 /temp
-/temp/
 
+/media
 
 # misc
 .DS_Store

@@ -31,11 +31,13 @@ app.use((error, req, res, next) => {
 });
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.get("/", (req, res) => {
-//     res.json({ message: "Test message"});
-// });
-
+// const route = require('./routers/user.router');
+// app.use(route);
 require('./routers/user.router')(app);
+
+app.use((req, res) => {
+  res.status(404).json({ message: 'not found' });
+});
 
 const PORT = (process.env.NODE_ENV === 'production') ? process.env.SERVER_PORT : 3000;
 app.listen(PORT, () => {

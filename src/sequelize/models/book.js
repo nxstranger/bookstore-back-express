@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     category: DataTypes.INTEGER,
     author: DataTypes.INTEGER,
-
+    slug: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Book',

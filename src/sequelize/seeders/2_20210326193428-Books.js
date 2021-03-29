@@ -1,13 +1,18 @@
 const bookDescription = '100500 symbols about this book, 100500 symbols about this book';
+const mediaManager = require('../../utils/seedManager/bookMediaManager');
 
-function makeBookObj() {
+const bookObjPool = [];
+const bookDirPool = mediaManager.getMediaDirs();
+
+function makeBookObj(dirname) {
   return {
     title: 'bookTitle',
     price: 499,
-    image: '20210327062834_chem-proshe-tem-lucshe/',
+    image: mediaManager.getPosterPath(dirname),
     description: bookDescription,
     category: 1,
     author: 1,
+    slug: mediaManager.getSlugFromDirname(dirname),
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -15,12 +20,11 @@ function makeBookObj() {
 
 module.exports = {
   up: async (queryInterface) => {
-    const bookObjPool = [];
     // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < 5; i++) {
-      const bookObj = makeBookObj();
+    bookDirPool.forEach((dirname) => {
+      const bookObj = makeBookObj(dirname);
       bookObjPool.push(bookObj);
-    }
+    });
     await queryInterface.bulkInsert('Books', bookObjPool);
   },
 

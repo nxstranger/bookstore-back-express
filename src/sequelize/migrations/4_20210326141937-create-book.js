@@ -19,6 +19,10 @@ module.exports = {
       description: {
         type: Sequelize.STRING,
       },
+      slug: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       category: {
         type: Sequelize.INTEGER,
         references: {

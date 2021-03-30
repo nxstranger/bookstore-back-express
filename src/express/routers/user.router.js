@@ -28,7 +28,8 @@ module.exports = (app) => {
   app.use('/api/categories', routerCategory);
 
   // Book
-  routerBookCRUD.get('/:catslug/:bookslug', bookController.getBook);
-  routerBookCRUD.get('/:catslug', bookController.getBooksByCategorySlug);
+  routerBookCRUD.get('/:catSlug/:bookSlug', bookController.getBook);
+  routerBookCRUD.get('/:catSlug', bookController.getBooksByCategorySlug);
+  routerBookCRUD.get('/', bookController.getAllBooks);
   app.use('/api/book', routerBookCRUD);
 };

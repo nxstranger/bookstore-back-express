@@ -1,5 +1,5 @@
-const dbORM = require('../models/index');
 const { Op } = require('sequelize');
+const dbORM = require('../models/index');
 const { createFolder, slugToFolderName } = require('../../utils/seedManager/bookMediaManager');
 
 const { Book, Category, BookAuthor } = dbORM;
@@ -65,7 +65,13 @@ module.exports.findAllByCategorySlug = (category) => new Promise((success, rejec
     ],
   })
     .then((data) => success(data))
-    .catch((err) => reject(Error(err.message || 'BookController findAll bu category error')));
+    .catch((err) => reject(Error(err.message || 'BookController findAll by category error')));
+});
+
+module.exports.findBookById = (id) => new Promise((success, reject) => {
+  Book.findByPk(id)
+    .then((data) => success(data))
+    .catch((err) => reject(Error(err.message || 'Book controller find by id error')));
 });
 
 module.exports.findBookBySlug = (category, id, slug) => new Promise((success, reject) => {

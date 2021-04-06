@@ -14,13 +14,20 @@ module.exports.getBooksByCategorySlug = (req, res) => {
     .catch((err) => res.status(404).json({ message: err.message || 'could not get books by category' }));
 };
 
+module.exports.getBookById = (req, res) => {
+  const { id } = req.params;
+  bookController.findBookById(id)
+    .then((data) => res.status(200).json(data))
+    .catch((err) => res.status(404).json({ message: err.message || 'could not get book' }));
+};
+
 module.exports.getBook = (req, res) => {
   const { catSlug, bookSlug } = req.params;
   const bookId = bookSlug.split('_')[0];
   const bookTailSlug = bookSlug.split('_')[1];
   bookController.findBookBySlug(catSlug, bookId, bookTailSlug)
     .then((data) => res.status(200).json(data))
-    .catch((err) => res.status(404).json({ message: err.message || 'could not get books by category' }));
+    .catch((err) => res.status(404).json({ message: err.message || 'could not get book' }));
 };
 
 module.exports.getAllBooks = (req, res) => {

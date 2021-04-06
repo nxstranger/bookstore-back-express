@@ -5,7 +5,6 @@ const bookObjPool = [];
 const bookDirPool = mediaManager.getMediaDirs();
 
 function randomInteger(min, max) {
-  // получить случайное число от (min-0.5) до (max+0.5)
   const rand = min - 0.5 + Math.random() * (max - min + 1);
   return Math.round(rand);
 }
@@ -14,7 +13,7 @@ function makeBookObj(dirname) {
   return {
     title: 'bookTitle',
     price: 499,
-    image: mediaManager.getPosterPath(dirname),
+    media: dirname,
     description: bookDescription,
     category: randomInteger(1, 5),
     author: randomInteger(1, 5),
@@ -26,12 +25,13 @@ function makeBookObj(dirname) {
 
 module.exports = {
   up: async (queryInterface) => {
-    // eslint-disable-next-line no-plusplus
-    bookDirPool.forEach((dirname) => {
-      const bookObj = makeBookObj(dirname);
-      bookObjPool.push(bookObj);
-    });
-    await queryInterface.bulkInsert('Books', bookObjPool);
+    if (bookDirPool.length) {
+      bookDirPool.forEach((dirname) => {
+        const bookObj = makeBookObj(dirname);
+        bookObjPool.push(bookObj);
+      });
+      await queryInterface.bulkInsert('Books', bookObjPool);
+    }
   },
 
   down: async (queryInterface) => {

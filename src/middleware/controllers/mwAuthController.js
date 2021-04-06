@@ -48,7 +48,7 @@ module.exports.register = (req, res) => {
     .then(() => newUserValidator.validateRegisterFieldsData(req, res))
     .then(() => newUserValidator.userEmailExist(req))
     .then(() => mwUserController.create(req, res))
-    .catch((err) => res.status(400).json({ message: err.message }));
+    .catch((err) => res.status(409).json({ message: err.message }));
 };
 
 module.exports.refreshToken = (req, res) => {

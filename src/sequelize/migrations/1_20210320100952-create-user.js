@@ -22,6 +22,10 @@ module.exports = {
         type: DataTypes.STRING,
         null: true,
       },
+      admin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
       passwordHash: {
         type: Sequelize.STRING,
         allowNull: false,

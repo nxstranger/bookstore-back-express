@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const categoriesArray = [
   {
     slug: 'hobbi-dom-i-dosug',
@@ -19,7 +20,13 @@ const categoriesArray = [
 
 module.exports = {
   up: async (queryInterface) => {
-    await queryInterface.bulkInsert('Categories', categoriesArray);
+    const categories = await queryInterface.rawSelect(
+      'Categories',
+      { where: { id: { [Op.gt]: 0 } } }, ['id'],
+    );
+    if (!categories) {
+      await queryInterface.bulkInsert('Categories', categoriesArray);
+    }
   },
 
   down: async (queryInterface) => {

@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const authorsArray = [
   'Author123',
   'Author912',
@@ -8,12 +9,18 @@ const authorsArray = [
 
 module.exports = {
   up: async (queryInterface) => {
-    await authorsArray.forEach((userObj) => {
-      const authorObj = {
-        name: userObj,
-      };
-      queryInterface.bulkInsert('BookAuthors', [authorObj]);
-    });
+    const authors = await queryInterface.rawSelect(
+      'BookAuthors',
+      { where: { id: { [Op.gt]: 0 } } }, ['id'],
+    );
+    if (!authors) {
+      await authorsArray.forEach((userObj) => {
+        const authorObj = {
+          name: userObj,
+        };
+        queryInterface.bulkInsert('BookAuthors', [authorObj]);
+      });
+    }
   },
 
   down: async (queryInterface) => {

@@ -19,16 +19,20 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Rating, {
         foreignKey: 'bookId',
       });
+      this.hasMany(models.BookImage, {
+        foreignKey: 'bookId',
+      });
     }
   }
   Book.init({
     title: DataTypes.STRING,
     price: DataTypes.INTEGER,
-    image: DataTypes.STRING,
+    media: DataTypes.STRING,
     description: DataTypes.STRING,
     category: DataTypes.INTEGER,
     author: DataTypes.INTEGER,
     slug: DataTypes.STRING,
+    publish: DataTypes.BOOLEAN,
   }, {
     sequelize,
     modelName: 'Book',

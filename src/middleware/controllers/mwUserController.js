@@ -1,5 +1,5 @@
 const ormUserController = require('../../sequelize/controller/userController');
-const userInputValidator = require('../validation/userInputValidators');
+// const userInputValidator = require('../validation/userInputValidators');
 
 const updateAllowedFields = ['name', 'email', 'dateOfBirthday'];
 
@@ -12,7 +12,7 @@ module.exports.create = (req, res) => {
   };
 
   ormUserController.create(user)
-    .then((data) => res.status(200).json(
+    .then((data) => res.status(201).json(
       {
         id: data.id,
         name: data.name,
@@ -21,7 +21,7 @@ module.exports.create = (req, res) => {
       },
     ))
     .catch((err) => {
-      res.status(400).json({ message: err.message });
+      res.status(409).json({ message: err.message });
     });
 };
 

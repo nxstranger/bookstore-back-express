@@ -23,7 +23,7 @@ module.exports.validateRegisterFieldsData = (req, res) => new Promise((success) 
   const fullNameRegex = /^([a-z]+)|([а-я]+)$/i;
   const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
   const dateOfBirthdayRegex = /^(0[1-9]|1[012])[-/.](0[1-9]|[12][0-9]|3[01])[-/.](19|20)\d\d$/g;
-  const passwordRegex = /^.{8,}$/;
+  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
 
   const user = {
     name: req.body.name,
@@ -33,7 +33,7 @@ module.exports.validateRegisterFieldsData = (req, res) => new Promise((success) 
   };
 
   if (!user.name.match(fullNameRegex)) {
-    res.status(400).json({ message: "full name must be inputted like 'name surname' supported lang en, ru" });
+    res.status(400).json({ message: 'empty field name, supported lang en, ru' });
     return;
   }
   if (!user.email.match(emailRegex)) {
@@ -45,7 +45,7 @@ module.exports.validateRegisterFieldsData = (req, res) => new Promise((success) 
     return;
   }
   if (!user.password.match(passwordRegex)) {
-    res.status(400).json({ message: 'password min length 8 symbols' });
+    res.status(400).json({ message: 'password must contain digits and letters in upper and lower case' });
     return;
   }
   success();

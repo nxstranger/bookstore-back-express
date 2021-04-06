@@ -1,5 +1,4 @@
 const routerUserCRUD = require('express').Router();
-// const routerAuthor = require('express').Router();
 const routerCategory = require('express').Router();
 const routerBookCRUD = require('express').Router();
 const routerAuthorization = require('express').Router();
@@ -31,5 +30,6 @@ module.exports = (app) => {
   routerBookCRUD.get('/:catSlug/:bookSlug', bookController.getBook);
   routerBookCRUD.get('/:catSlug', bookController.getBooksByCategorySlug);
   routerBookCRUD.get('/', bookController.getAllBooks);
+  routerBookCRUD.post('/', bookController.createNewBook);
   app.use('/api/book', routerBookCRUD);
 };

@@ -13,7 +13,7 @@ module.exports = {
       price: {
         type: Sequelize.INTEGER,
       },
-      image: {
+      media: {
         type: Sequelize.STRING,
       },
       description: {
@@ -38,6 +38,10 @@ module.exports = {
           key: 'id',
         },
         onDelete: 'SET NULL',
+      },
+      publish: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,

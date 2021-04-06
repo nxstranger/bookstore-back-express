@@ -1,5 +1,12 @@
 const bookController = require('../../sequelize/controller/bookController');
 
+module.exports.createNewBook = (req, res) => {
+  const payload = req.body;
+  bookController.createNewBook(payload.title, payload.slug, payload.description)
+    .then((data) => res.status(201).json(data))
+    .catch((err) => res.status(409).json({ message: err.message || 'could not get books by category' }));
+};
+
 module.exports.getBooksByCategorySlug = (req, res) => {
   const { catSlug } = req.params;
   bookController.findAllByCategorySlug(catSlug)

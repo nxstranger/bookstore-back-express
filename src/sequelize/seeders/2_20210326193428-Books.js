@@ -17,9 +17,7 @@ function makeBookObj(dirname) {
     description: bookDescription,
     category: randomInteger(1, 5),
     author: randomInteger(1, 5),
-    slug: mediaManager.getSlugFromDirname(dirname),
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    slug: 'slug-slug-slug',
   };
 }
 

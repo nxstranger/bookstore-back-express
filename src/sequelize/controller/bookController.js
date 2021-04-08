@@ -1,6 +1,6 @@
 const { Op } = require('sequelize');
 const dbORM = require('../models/index');
-const { createFolder, slugToFolderName } = require('../../utils/seedManager/bookMediaManager');
+const { createFolder, generateFolderName } = require('../../utils/seedManager/bookMediaManager');
 
 const { Book, Category, BookAuthor } = dbORM;
 const showedFieldsArray = ['id', 'title', 'price', 'description', 'media', 'slug'];
@@ -8,7 +8,7 @@ const showedFieldsArray = ['id', 'title', 'price', 'description', 'media', 'slug
 const showedFieldsElement = ['id', 'title', 'price', 'description', 'media', 'slug'];
 
 module.exports.createNewBook = (title, slug, description) => {
-  const folderName = slugToFolderName(slug);
+  const folderName = generateFolderName();
   createFolder(folderName);
 
   const book = {
@@ -25,6 +25,18 @@ module.exports.createNewBook = (title, slug, description) => {
       .catch((err) => reject(err || 'Not created'));
   });
 };
+
+module.exports.update = (id, bookData) => new Promise((success, reject) => {
+  Book.update(bookData, { where: { id } })
+    .then((num) => {
+      if (num[0] > 0) {
+        success();
+      } else {
+        reject(Error('Not updated'));
+      }
+    })
+    .catch((err) => reject(Error(err.message || 'Update error')));
+});
 
 module.exports.findAllBooks = () => new Promise((success, reject) => {
   Book.findAll({

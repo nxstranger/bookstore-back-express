@@ -47,7 +47,6 @@ module.exports.findOneById = (req, res) => {
 module.exports.update = (req, res) => {
   const { id } = req.params;
   const allowedFields = {};
-  // let interruptUpdate = false;
   // eslint-disable-next-line no-restricted-syntax
   for (const [field, value] of Object.entries(req.body)) {
     if (updateAllowedFields.includes(field)) {
@@ -57,27 +56,14 @@ module.exports.update = (req, res) => {
       return;
     }
   }
-  console.log('0000000000');
-  // if (allowedFields.email) {
-  //   userInputValidator.userEmailExist(req)
-  //     .catch((err) => {
-  //       console.log('111111111');
-  //       interruptUpdate = true;
-  //       res.status(400).json({ message: err.message });
-  //     });
-  // }
-  // if (interruptUpdate) return;
-  console.log('2222222');
   ormUserController.update(allowedFields, id)
     .then(() => {
-      console.log('3333333333');
       res.status(200).json({ message: 'updated' });
     },
     (err) => {
       res.status(400).json({ message: err.message });
     })
     .catch((err) => {
-      console.log('555555555555');
       res.status(400).json({ message: err.message });
     });
 };

@@ -16,16 +16,15 @@ module.exports.getMediaDirs = () => {
   return contentDirectories;
 };
 
-module.exports.slugToFolderName = (slug) => {
-  const id = nanoid.customAlphabet(nanoAlphabet, 16)();
-  return `${id}_${slug}`;
-};
+module.exports.generateFolderName = () => nanoid.customAlphabet(nanoAlphabet, 16)();
 
 module.exports.createFolder = (folderName) => {
   const newDirPath = path.join(mediaPath, folderName);
   console.log('newDirPath');
   console.log(newDirPath);
-  // fs.mkdir(newDirPath)
+  fs.mkdir(newDirPath, { recursive: true }, (err) => {
+    if (err) throw err;
+  });
 };
 
 module.exports.getSlugFromDirname = (dirname) => dirname.split('_')[1];

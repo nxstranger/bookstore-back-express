@@ -1,5 +1,7 @@
 const bookController = require('../../sequelize/controller/bookController');
 
+const updateBookAllowedFields = ['title', 'slug', 'description', 'price', 'publish', 'category', 'author'];
+
 module.exports.createNewBook = (req, res) => {
   const payload = req.body;
   bookController.createNewBook(payload.title, payload.slug, payload.description)
@@ -34,4 +36,22 @@ module.exports.getAllBooks = (req, res) => {
   bookController.findAllBooks()
     .then((data) => res.status(200).json(data))
     .catch((err) => res.status(404).json({ message: err.message || 'could not get books by category' }));
+};
+
+module.exports.updateBookInfo = (req, res) => {
+  const obj = req.body;
+  const fields = {};
+  Object.entries(obj).forEach(([key, value]) => {
+    if (updateBookAllowedFields.includes(key)) {
+      fields[key] = value;
+    }
+  });
+  bookController.update(req.params.id, fields)
+    .then(
+      () => { res.status(200).json({ message: 'updated' }); },
+      (err) => { res.status(400).json({ message: err.message }); },
+    )
+    .catch((err) => {
+      res.status(400).json({ message: err.message });
+    });
 };

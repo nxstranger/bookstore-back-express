@@ -5,3 +5,10 @@ module.exports.getAllCategories = (req, res) => {
     .then((data) => res.status(200).json(data))
     .catch((err) => req.status(500).json({ message: err.message || 'could not get categories' }));
 };
+
+module.exports.getCategoriesStartedWith = (req, res) => {
+  const { head } = req.params;
+  categoryController.findStartingWith(head)
+    .then((data) => res.status(200).json(data))
+    .catch((err) => req.status(500).json({ message: err.message || 'could not get categories' }));
+};

@@ -1,6 +1,6 @@
 const { Op } = require('sequelize');
 const dbORM = require('../models/index');
-const { createFolder, generateFolderName } = require('../../utils/seedManager/bookMediaManager');
+const { createFolder, generateName } = require('../../utils/seedManager/bookMediaManager');
 
 const { Book, Category, BookAuthor } = dbORM;
 const showedFieldsArray = ['id', 'title', 'price', 'description', 'media', 'slug'];
@@ -8,7 +8,7 @@ const showedFieldsArray = ['id', 'title', 'price', 'description', 'media', 'slug
 const showedFieldsElement = ['id', 'title', 'price', 'description', 'media', 'slug'];
 
 module.exports.createNewBook = (title, slug, description) => {
-  const folderName = generateFolderName();
+  const folderName = generateName();
   createFolder(folderName);
 
   const book = {
@@ -73,7 +73,7 @@ module.exports.findAllByCategorySlug = (category) => new Promise((success, rejec
       attributes: ['name'],
     }],
     order: [
-      ['id', 'DESC'],
+      ['id', 'ASC'],
     ],
   })
     .then((data) => success(data))
@@ -86,10 +86,9 @@ module.exports.findBookById = (id) => new Promise((success, reject) => {
     .catch((err) => reject(Error(err.message || 'Book controller find by id error')));
 });
 
-module.exports.findBookBySlug = (category, id, slug) => new Promise((success, reject) => {
+module.exports.findBookBySlug = (id, slug) => new Promise((success, reject) => {
   Book.findOne({
     where: {
-      '$Category.slug$': category,
       slug,
       id,
       publish: true,

@@ -16,12 +16,10 @@ module.exports.getMediaDirs = () => {
   return contentDirectories;
 };
 
-module.exports.generateFolderName = () => nanoid.customAlphabet(nanoAlphabet, 16)();
+module.exports.generateName = () => nanoid.customAlphabet(nanoAlphabet, 16)();
 
 module.exports.createFolder = (folderName) => {
   const newDirPath = path.join(mediaPath, folderName);
-  console.log('newDirPath');
-  console.log(newDirPath);
   fs.mkdir(newDirPath, { recursive: true }, (err) => {
     if (err) throw err;
   });

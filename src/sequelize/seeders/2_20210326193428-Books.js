@@ -18,6 +18,7 @@ function makeBookObj(dirname) {
     category: randomInteger(1, 5),
     author: randomInteger(1, 5),
     slug: 'slug-slug-slug',
+    publish: true,
   };
 }
 

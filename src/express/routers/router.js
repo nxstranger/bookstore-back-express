@@ -35,8 +35,8 @@ module.exports = (app) => {
   app.use('/api/author', routerBookAuthor);
 
   // Book
-  routerBookCRUD.get('/slug/:catSlug/:bookSlug', bookController.getBook);
-  routerBookCRUD.get('/slug/:catSlug', bookController.getBooksByCategorySlug);
+  routerBookCRUD.get('/detail/:book', bookController.getBook);
+  routerBookCRUD.get('/categories/:catSlug', bookController.getBooksByCategorySlug);
   routerBookCRUD.get('/id/:id', bookController.getBookById);
   routerBookCRUD.put('/id/:id', bookController.updateBookInfo);
   routerBookCRUD.get('/', bookController.getAllBooks);

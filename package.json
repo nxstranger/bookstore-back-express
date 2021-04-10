@@ -12,10 +12,12 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
+    "multer": "^1.4.2",
     "nanoid": "^3.1.22",
     "pg": "^8.5.1",
     "sequelize": "^6.6.2",
-    "sequelize-cli": "^6.2.0"
+    "sequelize-cli": "^6.2.0",
+    "sharp": "^0.28.1"
   },
   "scripts": {
     "start": "node ./src/express/server.js",

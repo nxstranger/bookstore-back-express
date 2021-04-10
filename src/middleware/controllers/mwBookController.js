@@ -6,7 +6,7 @@ module.exports.createNewBook = (req, res) => {
   const payload = req.body;
   bookController.createNewBook(payload.title, payload.slug, payload.description)
     .then((data) => res.status(201).json(data))
-    .catch((err) => res.status(409).json({ message: err.message || 'could not get books by category' }));
+    .catch((err) => res.status(409).json({ message: err.message || 'could not create books' }));
 };
 
 module.exports.getBooksByCategorySlug = (req, res) => {
@@ -18,16 +18,16 @@ module.exports.getBooksByCategorySlug = (req, res) => {
 
 module.exports.getBookById = (req, res) => {
   const { id } = req.params;
-  bookController.findBookById(id)
+  bookController.findBookById(+id)
     .then((data) => res.status(200).json(data))
     .catch((err) => res.status(404).json({ message: err.message || 'could not get book' }));
 };
 
 module.exports.getBook = (req, res) => {
-  const { catSlug, bookSlug } = req.params;
-  const bookId = bookSlug.split('_')[0];
-  const bookTailSlug = bookSlug.split('_')[1];
-  bookController.findBookBySlug(catSlug, bookId, bookTailSlug)
+  const { book } = req.params;
+  const bookId = book.split('_')[0];
+  const bookSlug = book.split('_')[1];
+  bookController.findBookBySlug(bookId, bookSlug)
     .then((data) => res.status(200).json(data))
     .catch((err) => res.status(404).json({ message: err.message || 'could not get book' }));
 };
@@ -35,7 +35,7 @@ module.exports.getBook = (req, res) => {
 module.exports.getAllBooks = (req, res) => {
   bookController.findAllBooks()
     .then((data) => res.status(200).json(data))
-    .catch((err) => res.status(404).json({ message: err.message || 'could not get books by category' }));
+    .catch((err) => res.status(404).json({ message: err.message || 'could not get all books' }));
 };
 
 module.exports.updateBookInfo = (req, res) => {

@@ -107,3 +107,9 @@ module.exports.findBookBySlug = (id, slug) => new Promise((success, reject) => {
     .then((data) => success(data))
     .catch((err) => reject(Error(err.message || 'BookController get book error')));
 });
+
+module.exports.delete = (id) => new Promise((success, reject) => {
+  Book.destroy({ where: { id } })
+    .then((num) => success(num))
+    .catch((err) => reject(Error(err.message || 'Delete error')));
+});

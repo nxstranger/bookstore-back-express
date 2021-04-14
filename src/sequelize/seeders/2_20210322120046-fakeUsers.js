@@ -1,4 +1,5 @@
-const Op = require('sequelize').Op;
+const { Op } = require('sequelize');
+
 const passwordManager = require('../../utils/passwordHashManager/passwordManager');
 
 const fakeUserData = [];

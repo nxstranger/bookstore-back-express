@@ -55,3 +55,13 @@ module.exports.updateBookInfo = (req, res) => {
       res.status(400).json({ message: err.message });
     });
 };
+
+module.exports.deleteCategory = (req, res) => {
+  const { id } = req.params;
+  bookController.delete(id)
+    .then(() => res.status(200).json({ message: 'deleted' }),
+      (err) => res.status(200).json({ message: err.message }))
+    .catch((err) => {
+      res.status(400).json({ message: err.message });
+    });
+};

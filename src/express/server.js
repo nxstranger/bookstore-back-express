@@ -23,7 +23,7 @@ app.use((error, req, res, next) => {
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-require('./routers/mediaRouter')(app);
+require('./routers/imagesRouter')(app);
 require('./routers/router')(app);
 
 app.use((req, res) => {

@@ -4,6 +4,7 @@ const multerConfig = require('../../middleware/milter/config');
 const mwBookImageController = require('../../middleware/controllers/mwBookImageController');
 
 const storage = multer.memoryStorage();
+
 const mwMulter = multer({
   storage,
   fileFilter: multerConfig.fileFilter,
@@ -12,5 +13,7 @@ const mwMulter = multer({
 // Media upload
 module.exports = (app) => {
   routerBookImage.post('/load/:bookId', mwMulter, mwBookImageController.createNewImage);
+  routerBookImage.get('/book/:bookId', mwBookImageController.getImagesOfBook);
+  routerBookImage.delete('/id/:imageId', mwBookImageController.deleteImage);
   app.use('/api/images', routerBookImage);
 };

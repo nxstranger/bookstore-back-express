@@ -18,13 +18,13 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      avatar: {
-        type: DataTypes.STRING,
-        null: true,
-      },
-      admin: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
+      role: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'Roles',
+          key: 'id',
+        },
+        defaultValue: 1,
       },
       passwordHash: {
         type: Sequelize.STRING,

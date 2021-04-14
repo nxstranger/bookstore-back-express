@@ -6,8 +6,6 @@ services:
       context: .
       dockerfile: Dockerfile
     command: yarn start
-    volumes:
-      - .:/usr/src/app/
     env_file:
       - ./.env
     ports:

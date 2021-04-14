@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         allowNull: false,
       });
+      this.hasOne(models.Role, {
+        foreignKey: 'role',
+        allowNull: false,
+      });
       this.hasMany(models.Rating, {
         foreignKey: 'userid',
         allowNull: false,
@@ -42,12 +46,8 @@ module.exports = (sequelize, DataTypes) => {
         isEmail: true,
       },
     },
-    avatar: {
-      type: DataTypes.STRING,
-      null: true,
-    },
-    admin: {
-      type: DataTypes.BOOLEAN,
+    role: {
+      type: DataTypes.INTEGER,
       defaultValue: false,
     },
     passwordHash: DataTypes.STRING,

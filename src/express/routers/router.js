@@ -27,11 +27,15 @@ module.exports = (app) => {
   // Categories
   routerCategory.get('/', categoryController.getAllCategories);
   routerCategory.get('/search/:head', categoryController.getCategoriesStartedWith);
+  routerCategory.post('/', categoryController.create);
+  routerCategory.delete('/:id', categoryController.deleteCategory);
   app.use('/api/categories', routerCategory);
 
   // Author
   routerBookAuthor.get('/search/:head', bookAuthorController.getCategoriesStartedWith);
   routerBookAuthor.get('/', bookAuthorController.getAllAuthors);
+  routerBookAuthor.post('/', bookAuthorController.create);
+  routerBookAuthor.delete('/:id', bookAuthorController.deleteAuthor);
   app.use('/api/author', routerBookAuthor);
 
   // Book

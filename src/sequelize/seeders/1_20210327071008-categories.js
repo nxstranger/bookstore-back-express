@@ -1,4 +1,5 @@
 const { Op } = require('sequelize');
+
 const categoriesArray = [
   {
     slug: 'hobbi-dom-i-dosug',

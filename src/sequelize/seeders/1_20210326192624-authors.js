@@ -1,4 +1,5 @@
 const { Op } = require('sequelize');
+
 const authorsArray = [
   'Author123',
   'Author912',

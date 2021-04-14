@@ -3,7 +3,7 @@ const routerCategory = require('express').Router();
 const routerBookCRUD = require('express').Router();
 const routerAuthorization = require('express').Router();
 const routerBookAuthor = require('express').Router();
-const middlewareAccessJwt = require('../../middleware/validation/accessJwtMiddleware');
+const mwAccess = require('../../middleware/validation/accessJwtMiddleware');
 const usersController = require('../../middleware/controllers/mwUserController');
 const authController = require('../../middleware/controllers/mwAuthController');
 const categoryController = require('../../middleware/controllers/mwCategoryController');
@@ -12,10 +12,10 @@ const bookAuthorController = require('../../middleware/controllers/mwAuthorContr
 
 module.exports = (app) => {
   // API user
-  routerUserCRUD.get('/', middlewareAccessJwt.validateTokenAccess, usersController.findAll);
-  routerUserCRUD.get('/:id', middlewareAccessJwt.validateTokenAccess, usersController.findOneById);
-  routerUserCRUD.put('/:id', middlewareAccessJwt.validateTokenAccess, usersController.update);
-  routerUserCRUD.delete('/:id', middlewareAccessJwt.validateTokenAccess, usersController.delete);
+  routerUserCRUD.get('/', mwAccess.validateTokenAccess, usersController.findAll);
+  routerUserCRUD.get('/:id', mwAccess.validateTokenAccess, usersController.findOneById);
+  routerUserCRUD.put('/:id', mwAccess.validateTokenAccess, usersController.update);
+  routerUserCRUD.delete('/:id', mwAccess.validateTokenAccess, usersController.delete);
   app.use('/api/users', routerUserCRUD);
 
   // Authorization
@@ -27,15 +27,15 @@ module.exports = (app) => {
   // Categories
   routerCategory.get('/', categoryController.getAllCategories);
   routerCategory.get('/search/:head', categoryController.getCategoriesStartedWith);
-  routerCategory.post('/', categoryController.create);
-  routerCategory.delete('/:id', categoryController.deleteCategory);
+  routerCategory.post('/', mwAccess.validateAccessAdmin, categoryController.create);
+  routerCategory.delete('/:id', mwAccess.validateAccessAdmin, categoryController.deleteCategory);
   app.use('/api/categories', routerCategory);
 
   // Author
   routerBookAuthor.get('/search/:head', bookAuthorController.getCategoriesStartedWith);
   routerBookAuthor.get('/', bookAuthorController.getAllAuthors);
-  routerBookAuthor.post('/', bookAuthorController.create);
-  routerBookAuthor.delete('/:id', bookAuthorController.deleteAuthor);
+  routerBookAuthor.post('/', mwAccess.validateAccessAdmin, bookAuthorController.create);
+  routerBookAuthor.delete('/:id', mwAccess.validateAccessAdmin, bookAuthorController.deleteAuthor);
   app.use('/api/author', routerBookAuthor);
 
   // Book
@@ -44,6 +44,6 @@ module.exports = (app) => {
   routerBookCRUD.get('/id/:id', bookController.getBookById);
   routerBookCRUD.put('/id/:id', bookController.updateBookInfo);
   routerBookCRUD.get('/', bookController.getAllBooks);
-  routerBookCRUD.post('/', bookController.createNewBook);
+  routerBookCRUD.post('/', mwAccess.validateAccessAdmin, bookController.createNewBook);
   app.use('/api/book', routerBookCRUD);
 };

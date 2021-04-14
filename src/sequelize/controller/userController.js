@@ -35,6 +35,14 @@ module.exports.findOneById = (id) => new Promise((success, reject) => {
     .catch((err) => reject(Error(err.message || 'UserController findById error')));
 });
 
+module.exports.findUserRole = (id) => new Promise((success, reject) => {
+  User.findByPk(id, { attributes: ['id', 'role'] })
+    .then((data) => {
+      success(data);
+    })
+    .catch((err) => reject(Error(err.message || 'UserController find role error')));
+});
+
 module.exports.update = (userData, id) => new Promise((success, reject) => {
   User.update(userData, { where: { id } })
     .then((num) => {

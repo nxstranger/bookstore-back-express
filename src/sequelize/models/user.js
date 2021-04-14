@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     role: {
       type: DataTypes.INTEGER,
-      defaultValue: false,
+      defaultValue: 1,
     },
     passwordHash: DataTypes.STRING,
     passwordSalt: DataTypes.STRING,

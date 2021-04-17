@@ -2,7 +2,7 @@ const passwordManager = require('../../utils/passwordHashManager/passwordManager
 
 const admins = [];
 
-const passHashObj = passwordManager.hashPassword(`Lolkeklol1`);
+const passHashObj = passwordManager.hashPassword('Lolkeklol1');
 
 admins.push({
   name: 'kekolol',

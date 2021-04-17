@@ -1,4 +1,7 @@
 const { Op } = require('sequelize');
+const dbOrm = require('../models/index');
+
+const { User } = dbOrm;
 
 const passwordManager = require('../../utils/passwordHashManager/passwordManager');
 
@@ -20,11 +23,13 @@ for (let i = 0; i < 20; i++) {
 
 module.exports = {
   up: async (queryInterface) => {
-    const users = await queryInterface.rawSelect(
+    await queryInterface.bulkDelete('Users', null, {});
+    const users = await queryInterface.select(
+      User,
       'Users',
-      { where: { id: { [Op.gt]: 0 } } }, ['id'],
+      { where: { id: { [Op.ne]: null } } },
     );
-    if (!users) {
+    if (!users.length) {
       await queryInterface.bulkInsert('Users', fakeUserData);
     }
   },

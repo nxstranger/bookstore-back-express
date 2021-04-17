@@ -16,6 +16,17 @@ module.exports.getMediaDirs = () => {
   return contentDirectories;
 };
 
+module.exports.getImageNames = (folderName) => {
+  const contentDirectories = new Set();
+
+  const fullPath = path.join(mediaPath, folderName);
+  fs.readdirSync(fullPath)
+    .forEach((file) => {
+      contentDirectories.add(file.slice(0, 16));
+    });
+  return contentDirectories;
+};
+
 module.exports.generateName = () => nanoid.customAlphabet(nanoAlphabet, 16)();
 
 module.exports.createFolder = (folderName) => {

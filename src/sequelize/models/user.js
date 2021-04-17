@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         allowNull: false,
       });
-      this.hasOne(models.Role, {
+      this.belongsTo(models.Role, {
         foreignKey: 'role',
-        allowNull: false,
+        onDelete: 'CASCADE',
       });
       this.hasMany(models.Rating, {
         foreignKey: 'userid',
@@ -48,7 +48,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     role: {
       type: DataTypes.INTEGER,
-      defaultValue: 1,
     },
     passwordHash: DataTypes.STRING,
     passwordSalt: DataTypes.STRING,

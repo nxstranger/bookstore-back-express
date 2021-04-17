@@ -2,7 +2,12 @@ const { Op } = require('sequelize');
 const dbORM = require('../models/index');
 const { createFolder, generateName } = require('../../utils/seedManager/bookMediaManager');
 
-const { Book, Category, BookAuthor } = dbORM;
+const {
+  Book,
+  Category,
+  BookAuthor,
+  BookImage,
+} = dbORM;
 const showedFieldsArray = ['id', 'title', 'price', 'description', 'media', 'slug'];
 
 const showedFieldsElement = ['id', 'title', 'price', 'description', 'media', 'slug'];
@@ -50,6 +55,10 @@ module.exports.findAllBooks = () => new Promise((success, reject) => {
       model: BookAuthor,
       as: 'BookAuthor',
       attributes: ['name'],
+    }, {
+      model: BookImage,
+      as: 'BookImages',
+      attributes: ['name'],
     }],
     order: [
       ['id', 'ASC'],
@@ -70,6 +79,10 @@ module.exports.findAllByCategorySlug = (category) => new Promise((success, rejec
     }, {
       model: BookAuthor,
       as: 'BookAuthor',
+      attributes: ['name'],
+    }, {
+      model: BookImage,
+      as: 'BookImages',
       attributes: ['name'],
     }],
     order: [
@@ -101,6 +114,10 @@ module.exports.findBookBySlug = (id, slug) => new Promise((success, reject) => {
     }, {
       model: BookAuthor,
       as: 'BookAuthor',
+      attributes: ['name'],
+    }, {
+      model: BookImage,
+      as: 'BookImages',
       attributes: ['name'],
     }],
   })

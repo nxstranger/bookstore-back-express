@@ -22,6 +22,7 @@ module.exports = (app) => {
   routerAuthorization.post('/login', authController.login);
   routerAuthorization.post('/registration', authController.register);
   routerAuthorization.post('/token/refresh', authController.refreshToken);
+  routerAuthorization.get('/token/user-info', authController.getUserInfoByToken);
   app.use('/api/auth', routerAuthorization);
 
   // Categories

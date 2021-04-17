@@ -4,6 +4,7 @@ const mwUserController = require('./mwUserController');
 const passwordController = require('../../utils/passwordHashManager/passwordManager');
 const newUserValidator = require('../validation/userInputValidators');
 const jwtUtils = require('../../utils/jwt/jwtUtils');
+const ormUserController = require('../../sequelize/controller/userController');
 
 const { User } = dbOrm;
 const tokenTailLength = 15;
@@ -79,4 +80,18 @@ module.exports.refreshToken = (req, res) => {
       }
     })
     .catch((err) => res.status(401).json({ message: err }));
+};
+
+module.exports.getUserInfoByToken = (req, res) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(' ')[1];
+  if (token == null) {
+    res.status(401).json({ message: 'Unauthorized' });
+  }
+  jwtUtils.jwtVerifyAccess(token)
+    .then((userId) => ormUserController.findOneById(userId))
+    .then((data) => res.status(200).json(data))
+    .catch((err) => {
+      res.status(400).json({ message: err.message });
+    });
 };

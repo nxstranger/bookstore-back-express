@@ -22,8 +22,11 @@ function makeBookObj(dirname) {
   };
 }
 
+
+
 module.exports = {
   up: async (queryInterface) => {
+    await queryInterface.bulkDelete('Books', null, {});
     if (bookDirPool.length) {
       bookDirPool.forEach((dirname) => {
         const bookObj = makeBookObj(dirname);

@@ -4,7 +4,6 @@ module.exports.create = (req, res) => {
   if (!(req.body && req.body.title && req.body.slug)) {
     res.status(500).json({ message: 'payload - error' });
   }
-  console.log('in work mwCatController create');
   const payload = {
     title: req.body.title,
     slug: req.body.slug,
@@ -16,13 +15,6 @@ module.exports.create = (req, res) => {
 
 module.exports.getAllCategories = (req, res) => {
   categoryController.findAll()
-    .then((data) => res.status(200).json(data))
-    .catch((err) => req.status(500).json({ message: err.message || 'could not get categories' }));
-};
-
-module.exports.getCategoriesStartedWith = (req, res) => {
-  const { head } = req.params;
-  categoryController.findStartingWith(head)
     .then((data) => res.status(200).json(data))
     .catch((err) => req.status(500).json({ message: err.message || 'could not get categories' }));
 };

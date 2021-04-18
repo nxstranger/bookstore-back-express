@@ -2,14 +2,7 @@ const jwtUtils = require('../../utils/jwt/jwtUtils');
 const ormUserController = require('../../sequelize/controller/userController');
 
 module.exports.validateAccessAdmin = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (token == null) {
-    res.status(401).json({ message: 'Unauthorized' });
-    return;
-  }
-
+  const { token } = res.locals;
   jwtUtils.jwtVerifyAccess(token)
     .then((userId) => ormUserController.findUserRole(userId))
     .then((user) => {
@@ -23,13 +16,7 @@ module.exports.validateAccessAdmin = (req, res, next) => {
 };
 
 module.exports.validateTokenAccess = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (token == null) {
-    res.status(401).json({ message: 'Unauthorized' });
-    return;
-  }
+  const { token } = res.locals;
   jwtUtils.jwtVerifyAccess(token)
     .then((userId) => ormUserController.findOneById(userId))
     .then((user) => {
@@ -44,4 +31,17 @@ module.exports.validateTokenAccess = (req, res, next) => {
       res.status(401).json({ message: 'Unauthorized' });
     })
     .catch((err) => res.status(403).json({ message: err }));
+};
+
+module.exports.checkAccessTokenInHeader = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (token == null) {
+    res.status(401).json({ message: 'Unauthorized' });
+    return;
+  }
+  res.locals.token = token;
+  console.log(req.locals);
+  next();
 };

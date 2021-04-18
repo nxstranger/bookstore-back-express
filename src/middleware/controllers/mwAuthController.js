@@ -83,13 +83,19 @@ module.exports.refreshToken = (req, res) => {
 };
 
 module.exports.getUserInfoByToken = (req, res) => {
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(' ')[1];
-  if (token == null) {
-    res.status(401).json({ message: 'Unauthorized' });
-  }
+  const { token } = res.locals;
   jwtUtils.jwtVerifyAccess(token)
     .then((userId) => ormUserController.findOneById(userId))
+    .then((data) => res.status(200).json(data))
+    .catch((err) => {
+      res.status(400).json({ message: err.message });
+    });
+};
+
+module.exports.getUserRoleByToken = (req, res) => {
+  const { token } = res.locals;
+  jwtUtils.jwtVerifyAccess(token)
+    .then((userId) => ormUserController.findUserRole(userId))
     .then((data) => res.status(200).json(data))
     .catch((err) => {
       res.status(400).json({ message: err.message });

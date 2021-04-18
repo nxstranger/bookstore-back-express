@@ -68,6 +68,31 @@ module.exports.findAllBooks = () => new Promise((success, reject) => {
     .catch((err) => reject(Error(err.message || 'BookController findAll error')));
 });
 
+module.exports.findUnpublishedBooks = () => new Promise((success, reject) => {
+  Book.findAll({
+    where: { publish: { [Op.eq]: false } },
+    attributes: showedFieldsArray,
+    include: [{
+      model: Category,
+      as: 'Category',
+      attributes: ['slug'],
+    }, {
+      model: BookAuthor,
+      as: 'BookAuthor',
+      attributes: ['name'],
+    }, {
+      model: BookImage,
+      as: 'BookImages',
+      attributes: ['name'],
+    }],
+    order: [
+      ['id', 'ASC'],
+    ],
+  })
+    .then((data) => success(data))
+    .catch((err) => reject(Error(err.message || 'BookController unpublished books error')));
+});
+
 module.exports.findAllByCategorySlug = (category) => new Promise((success, reject) => {
   Book.findAll({
     where: { '$Category.slug$': category, publish: true },

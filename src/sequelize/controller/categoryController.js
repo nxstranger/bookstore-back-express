@@ -31,18 +31,6 @@ module.exports.findAll = () => new Promise((success, reject) => {
     .catch((err) => reject(Error(err.message || 'CategoryController findAll error')));
 });
 
-module.exports.findStartingWith = (head) => new Promise((success, reject) => {
-  Category.findAll({
-    where: {
-      slug: {
-        [Op.startsWith]: head,
-      },
-    },
-  })
-    .then((data) => success(data))
-    .catch((err) => reject(Error(err.message || 'CategoryController find by head')));
-});
-
 module.exports.delete = (id) => new Promise((success, reject) => {
   Category.destroy({ where: { id } })
     .then((num) => success(num))

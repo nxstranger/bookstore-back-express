@@ -65,3 +65,9 @@ module.exports.deleteCategory = (req, res) => {
       res.status(400).json({ message: err.message });
     });
 };
+
+module.exports.getUnpublishedBooks = (req, res) => {
+  bookController.findUnpublishedBooks()
+    .then((data) => res.status(200).json(data))
+    .catch((err) => res.status(404).json({ message: err.message || 'could not get books' }));
+};

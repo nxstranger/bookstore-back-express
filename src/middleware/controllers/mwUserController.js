@@ -71,8 +71,12 @@ module.exports.update = (req, res) => {
 module.exports.delete = (req, res) => {
   const { id } = req.params;
   ormUserController.delete(id)
-    .then(() => res.status(200).json({ message: 'deleted' }),
-      () => res.status(200).json({ message: ' not deleted' }))
+    .then((num) => {
+      if (num) {
+        return res.status(204).json({});
+      }
+      return res.status(404).json({ message: 'not found id' });
+    })
     .catch((err) => {
       res.status(400).json({ message: err.message });
     });

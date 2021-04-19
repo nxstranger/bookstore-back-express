@@ -37,7 +37,7 @@ module.exports = (app) => {
   app.use('/api/categories', routerCategory);
 
   // Author
-  routerBookAuthor.get('/search/:head', bookAuthorController.getCategoriesStartedWith);
+  routerBookAuthor.get('/search/:head', bookAuthorController.getAuthorsStartedWith);
   routerBookAuthor.get('/', bookAuthorController.getAllAuthors);
   routerBookAuthor.post('/', checkAccessTokenInHeader, validateAccessAdmin, bookAuthorController.create);
   routerBookAuthor.delete('/:id', checkAccessTokenInHeader, validateAccessAdmin, bookAuthorController.deleteAuthor);

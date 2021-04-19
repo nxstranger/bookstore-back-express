@@ -49,13 +49,10 @@ module.exports.deleteImage = (req, res) => {
   // let bookMedia = '';
   bookImageController.findImageByPK(imageId)
     .then((data) => {
-      console.log('output');
-      console.log(data.Book.media);
-      console.log(data.name);
       fs.unlinkSync(path.resolve('media', data.Book.media, `${data.name}${prefixSmall}`));
       fs.unlinkSync(path.resolve('media', data.Book.media, `${data.name}${prefixLarge}`));
       return bookImageController.delete(imageId);
     })
     .then(() => res.status(204).json({ message: 'deleted' }))
-    .catch((err) => res.status(404).json({ message: err.message || 'could not get a delete (2)' }));
+    .catch((err) => res.status(404).json({ message: err.message || 'could not a delete image' }));
 };

@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       BookImage.belongsTo(models.Book, {
         foreignKey: 'bookId',
         allowNull: false,
+        onDelete: 'CASCADE',
       });
     }
   }

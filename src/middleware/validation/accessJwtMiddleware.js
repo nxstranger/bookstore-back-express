@@ -42,6 +42,5 @@ module.exports.checkAccessTokenInHeader = (req, res, next) => {
     return;
   }
   res.locals.token = token;
-  console.log(req.locals);
   next();
 };

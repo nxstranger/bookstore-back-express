@@ -59,8 +59,12 @@ module.exports.updateBookInfo = (req, res) => {
 module.exports.deleteCategory = (req, res) => {
   const { id } = req.params;
   bookController.delete(id)
-    .then(() => res.status(200).json({ message: 'deleted' }),
-      (err) => res.status(200).json({ message: err.message }))
+    .then((num) => {
+      if (num) {
+        return res.status(204).json({});
+      }
+      return res.status(404).json({ message: 'not found id' });
+    })
     .catch((err) => {
       res.status(400).json({ message: err.message });
     });

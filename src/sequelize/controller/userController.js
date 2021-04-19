@@ -1,7 +1,7 @@
 const dbORM = require('../models/index');
 const TokenOrm = require('./tokenController');
 
-const { User } = dbORM;
+const { User, Role } = dbORM;
 
 const showedFields = ['id', 'name', 'email', 'dateOfBirthday'];
 
@@ -36,7 +36,17 @@ module.exports.findOneById = (id) => new Promise((success, reject) => {
 });
 
 module.exports.findUserRole = (id) => new Promise((success, reject) => {
-  User.findByPk(id, { attributes: ['id', 'role'] })
+  User.findByPk(
+    id, {
+      attributes:
+        ['id', 'role'],
+      include: [{
+        model: Role,
+        as: 'Role',
+        attributes: ['role'],
+      }],
+    },
+  )
     .then((data) => {
       success(data);
     })

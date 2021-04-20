@@ -8,7 +8,6 @@ module.exports = {
     host: '127.0.0.1',
     dialect: 'postgres',
     port: 5432,
-    operatorsAliases: 0,
     pool: {
       max: 5,
       min: 0,

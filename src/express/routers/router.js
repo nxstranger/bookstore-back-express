@@ -8,6 +8,7 @@ const authController = require('../../middleware/controllers/mwAuthController');
 const categoryController = require('../../middleware/controllers/mwCategoryController');
 const bookController = require('../../middleware/controllers/mwBookController');
 const bookAuthorController = require('../../middleware/controllers/mwAuthorController');
+const { bookQueryValidator } = require('../../middleware/validation/bookValidator');
 const {
   checkAccessTokenInHeader,
   validateTokenAccess,
@@ -45,9 +46,9 @@ module.exports = (app) => {
 
   // Book
   routerBookCRUD.get('/detail/:book', bookController.getBook);
-  routerBookCRUD.get('/categories/:catSlug', bookController.getBooksByCategorySlug);
+  routerBookCRUD.get('/category/:catSlug', bookController.getBooksByCategorySlug);
   routerBookCRUD.get('/id/:id', bookController.getBookById);
-  routerBookCRUD.get('/', bookController.getAllBooks);
+  routerBookCRUD.get('/', bookQueryValidator, bookController.getBooks);
   routerBookCRUD.get('/unpublished', checkAccessTokenInHeader, validateAccessAdmin, bookController.getUnpublishedBooks);
   routerBookCRUD.put('/id/:id', checkAccessTokenInHeader, validateAccessAdmin, bookController.updateBookInfo);
   routerBookCRUD.post('/', checkAccessTokenInHeader, validateAccessAdmin, bookController.createNewBook);

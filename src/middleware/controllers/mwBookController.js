@@ -32,8 +32,8 @@ module.exports.getBook = (req, res) => {
     .catch((err) => res.status(404).json({ message: err.message || 'could not get book' }));
 };
 
-module.exports.getAllBooks = (req, res) => {
-  bookController.findAllBooks()
+module.exports.getBooks = (req, res) => {
+  bookController.findBooks({ ...req.query })
     .then((data) => res.status(200).json(data))
     .catch((err) => res.status(404).json({ message: err.message || 'could not get all books' }));
 };

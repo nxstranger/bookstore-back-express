@@ -10,7 +10,7 @@ const prefixLarge = '_large.jpg';
 module.exports.createNewImage = async (req, res) => {
   const { folder: bookFolder } = req.body;
   const newFilename = generateName();
-  if (req.file.buffer) {
+  if (req.file && req.file.buffer) {
     await sharp(req.file.buffer)
       .resize(200)
       .jpeg({ quality: 50 })

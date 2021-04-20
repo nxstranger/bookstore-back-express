@@ -12,6 +12,42 @@ const showedFieldsArray = ['id', 'title', 'price', 'description', 'media', 'slug
 
 const showedFieldsElement = ['id', 'title', 'price', 'description', 'media', 'slug'];
 
+const paginationLimit = 8;
+
+const queryRequestDatabaseObject = (query) => {
+  const {
+    page,
+    ordering,
+    author,
+    price_from: priceFrom,
+    price_to: priceTo,
+    category,
+  } = query;
+  const request = { publish: { [Op.eq]: true } };
+  let order = [['id', 'ASC']];
+  const pagination = { limit: paginationLimit };
+  if (!query) return [request];
+  if (ordering) {
+    switch (ordering) {
+      case 'price_asc': order = ['price', 'ASC']; break;
+      case 'price_desc': order = ['price', 'DESC']; break;
+      case 'title_asc': order = ['title', 'ASC']; break;
+      case 'title_desc': order = ['title', 'DESC']; break;
+      default:
+        break;
+    }
+  }
+  if (category) request['$Category.slug$'] = category;
+  if (author) request['$BookAuthor.name$'] = author;
+  if (priceFrom && priceTo && +priceFrom && +priceTo) {
+    request.price = { [Op.gte]: priceFrom, [Op.lte]: priceTo };
+  }
+  if (page && +page > 1) {
+    pagination.offset = +page * paginationLimit - 8;
+  }
+  return { request, order, pagination };
+};
+
 module.exports.createNewBook = (title, slug, description) => {
   const folderName = generateName();
   createFolder(folderName);
@@ -43,10 +79,16 @@ module.exports.update = (id, bookData) => new Promise((success, reject) => {
     .catch((err) => reject(Error(err.message || 'Update error')));
 });
 
-module.exports.findAllBooks = () => new Promise((success, reject) => {
+module.exports.findBooks = (options) => new Promise((success, reject) => {
+  console.log(options);
+  const { request, order, pagination } = queryRequestDatabaseObject(options);
+  console.log(request);
+  console.log(order);
+  console.log(pagination);
   Book.findAll({
-    where: { publish: { [Op.eq]: true } },
+    where: request,
     attributes: showedFieldsArray,
+    ...pagination,
     include: [{
       model: Category,
       as: 'Category',
@@ -61,7 +103,7 @@ module.exports.findAllBooks = () => new Promise((success, reject) => {
       attributes: ['name'],
     }],
     order: [
-      ['id', 'ASC'],
+      order,
     ],
   })
     .then((data) => success(data))

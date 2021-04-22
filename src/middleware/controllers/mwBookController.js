@@ -11,7 +11,7 @@ module.exports.createNewBook = (req, res) => {
 
 module.exports.getBooksByCategorySlug = (req, res) => {
   const { catSlug } = req.params;
-  bookController.findAllByCategorySlug(catSlug)
+  bookController.findAllByCategorySlug(catSlug, { ...req.query })
     .then((data) => res.status(200).json(data))
     .catch((err) => res.status(404).json({ message: err.message || 'could not get books by category' }));
 };

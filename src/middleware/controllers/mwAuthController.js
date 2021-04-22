@@ -49,7 +49,10 @@ module.exports.register = (req, res) => {
     .then(() => newUserValidator.validateRegisterFieldsData(req, res))
     .then(() => newUserValidator.userEmailExist(req))
     .then(() => mwUserController.create(req, res))
-    .catch((err) => res.status(409).json({ message: err.message }));
+    .catch((err) => {
+      console.log(err.message);
+      return res.status(409).json({ message: 'not created' });
+    });
 };
 
 module.exports.refreshToken = (req, res) => {

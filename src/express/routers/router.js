@@ -46,7 +46,7 @@ module.exports = (app) => {
 
   // Book
   routerBookCRUD.get('/detail/:book', bookController.getBook);
-  routerBookCRUD.get('/category/:catSlug', bookController.getBooksByCategorySlug);
+  routerBookCRUD.get('/category/:catSlug', bookQueryValidator, bookController.getBooksByCategorySlug);
   routerBookCRUD.get('/id/:id', bookController.getBookById);
   routerBookCRUD.get('/', bookQueryValidator, bookController.getBooks);
   routerBookCRUD.get('/unpublished', checkAccessTokenInHeader, validateAccessAdmin, bookController.getUnpublishedBooks);

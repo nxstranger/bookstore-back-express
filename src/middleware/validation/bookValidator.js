@@ -1,4 +1,4 @@
-const queryList = ['ordering', 'author', 'category', 'price_from', 'price_to', 'page'];
+const queryList = ['ordering', 'author_id', 'category', 'price_from', 'price_to', 'page'];
 
 module.exports.bookQueryValidator = (req, res, next) => {
   // eslint-disable-next-line no-restricted-syntax

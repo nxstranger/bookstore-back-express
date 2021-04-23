@@ -85,12 +85,12 @@ module.exports.findBooks = (options, categorySlug = '') => new Promise((success,
       model: Category,
       as: 'Category',
       attributes: ['id', 'slug'],
-      where: (!category) ? {} : { slug: category },
+      where: (!category || category === 'all') ? {} : { slug: category },
     }, {
       model: BookAuthor,
       as: 'BookAuthor',
       attributes: ['id', 'name'],
-      where: !authorId ? {} : { id: authorId },
+      where: (!authorId || authorId === 'all') ? {} : { id: authorId },
     }],
     where: {
       publish: true,
@@ -108,12 +108,12 @@ module.exports.findBooks = (options, categorySlug = '') => new Promise((success,
       model: Category,
       as: 'Category',
       attributes: ['id', 'slug'],
-      where: (!category) ? {} : { slug: category },
+      where: (!category || category === 'all') ? {} : { slug: category },
     }, {
       model: BookAuthor,
       as: 'BookAuthor',
       attributes: ['id', 'name'],
-      where: !authorId ? {} : { id: authorId },
+      where: (!authorId || authorId === 'all') ? {} : { id: authorId },
     }, {
       model: BookImage,
       as: 'BookImages',
@@ -140,54 +140,6 @@ module.exports.findBooks = (options, categorySlug = '') => new Promise((success,
     })
     .catch((err) => reject(Error(err.message || 'BookController findAll error')));
 });
-
-// module.exports.findAllByCategorySlug = (category, options) => new Promise((success, reject) => {
-//   // const { request, order, pagination } = queryRequestDatabaseObject(options, true);
-//   const response = {};
-//   Book.findAll({
-//     include: [{
-//       model: Category,
-//       as: 'Category',
-//       where: { '$Category.slug$': category },
-//       attributes: ['slug'],
-//     }, {
-//       model: BookAuthor,
-//       as: 'BookAuthor',
-//       attributes: ['id', 'name'],
-//     }, {
-//       model: BookImage,
-//       as: 'BookImages',
-//       attributes: ['name'],
-//     }],
-//     ...pagination,
-//     order: [
-//       order,
-//     ],
-//     attributes: showedFieldsArray,
-//     where: { [Op.and]: [{ publish: true }, { id: { [Op.ne]: null } }, ...request] },
-//   })
-//     .then((data) => {
-//       response.data = data;
-//       console.log(data);
-//       return success(response);
-//     })
-//     .catch((err) => reject(Error(err.message || 'BookController findAll by category error')));
-//   Book.count({
-//     include: [{
-//       model: Category,
-//       where: { '$Category.slug$': category },
-//       as: 'Category',
-//       attributes: ['slug'],
-//     }, {
-//       model: BookAuthor,
-//       as: 'BookAuthor',
-//       attributes: ['id', 'name'],
-//     }],
-//     where: { [Op.and]: [{ publish: true }, ...request] },
-//   }).then((count) => {
-//     if (count) response.count = count;
-//   });
-// });
 
 module.exports.findUnpublishedBooks = () => new Promise((success, reject) => {
   Book.findAll({

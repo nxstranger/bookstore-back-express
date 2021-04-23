@@ -14,19 +14,8 @@ const showedFieldsElement = ['id', 'title', 'price', 'description', 'media', 'sl
 
 const paginationLimit = 4;
 
-const queryRequestDatabaseObject = (query, inCategory = false) => {
-  const {
-    page,
-    ordering,
-    author_id: authorId,
-    price_from: priceFrom,
-    price_to: priceTo,
-    category,
-  } = query;
-  const request = [];
+const getOrdering = (ordering) => {
   let order = ['id', 'DESC'];
-  const pagination = { limit: paginationLimit, offset: 0 };
-  if (!query) return { request, order, pagination };
   if (ordering) {
     switch (ordering) {
       case 'price_asc':
@@ -45,23 +34,7 @@ const queryRequestDatabaseObject = (query, inCategory = false) => {
         break;
     }
   }
-  if (!inCategory) {
-    if (category && typeof category === 'string' && category !== 'all') {
-      request.push({ '$Category.slug$': category });
-    }
-  }
-  if (authorId && Number.isInteger(+authorId)) request.push({ author: authorId });
-  if (priceFrom && +priceFrom && priceTo && +priceTo) {
-    request.push({ price: { [Op.between]: [priceFrom, priceTo] } });
-  }
-  if (page && +page > 1) {
-    pagination.offset = ((+page - 1) * paginationLimit);
-  }
-  return {
-    request,
-    order,
-    pagination,
-  };
+  return order;
 };
 
 module.exports.createNewBook = (title, slug, description) => {
@@ -95,45 +68,71 @@ module.exports.update = (id, bookData) => new Promise((success, reject) => {
     .catch((err) => reject(Error(err.message || 'Update error')));
 });
 
-module.exports.findBooks = (options) => new Promise((success, reject) => {
-  const { request, order, pagination } = queryRequestDatabaseObject(options);
+module.exports.findBooks = (options, categorySlug = '') => new Promise((success, reject) => {
+  const {
+    page,
+    ordering,
+    author_id: authorId,
+    price_from: priceFrom,
+    price_to: priceTo,
+    category: categoryQuery,
+  } = options;
+  const category = categorySlug || categoryQuery;
+
   const response = {};
   Book.count({
-    where: { [Op.and]: [{ publish: true }, { id: { [Op.ne]: null } }, ...request] },
     include: [{
       model: Category,
       as: 'Category',
-      attributes: ['slug'],
+      attributes: ['id', 'slug'],
+      where: (!category) ? {} : { slug: category },
     }, {
       model: BookAuthor,
       as: 'BookAuthor',
       attributes: ['id', 'name'],
+      where: !authorId ? {} : { id: authorId },
     }],
-    subQuery: false,
+    where: {
+      publish: true,
+      price: {
+        [Op.between]: [
+          +priceFrom || 0,
+          +priceTo || 10000],
+      },
+    },
   }).then((count) => {
-    if (count) response.count = count;
+    response.count = count || 0;
   });
   Book.findAll({
-    where: { [Op.and]: [{ publish: true }, { id: { [Op.ne]: null } }, ...request] },
-    attributes: showedFieldsArray,
     include: [{
       model: Category,
       as: 'Category',
-      attributes: ['slug'],
+      attributes: ['id', 'slug'],
+      where: (!category) ? {} : { slug: category },
     }, {
       model: BookAuthor,
       as: 'BookAuthor',
       attributes: ['id', 'name'],
+      where: !authorId ? {} : { id: authorId },
     }, {
       model: BookImage,
       as: 'BookImages',
       attributes: ['name'],
     }],
+    limit: paginationLimit,
+    offset: (page && (+page > 1)) ? ((+page - 1) * paginationLimit) : 0,
+    attributes: showedFieldsArray,
     order: [
-      order,
+      getOrdering(ordering),
     ],
-    subQuery: false,
-    ...pagination,
+    where: {
+      publish: true,
+      price: {
+        [Op.between]: [
+          +priceFrom || 0,
+          +priceTo || 10000],
+      },
+    },
   })
     .then((data) => {
       response.data = data;
@@ -142,52 +141,60 @@ module.exports.findBooks = (options) => new Promise((success, reject) => {
     .catch((err) => reject(Error(err.message || 'BookController findAll error')));
 });
 
+// module.exports.findAllByCategorySlug = (category, options) => new Promise((success, reject) => {
+//   // const { request, order, pagination } = queryRequestDatabaseObject(options, true);
+//   const response = {};
+//   Book.findAll({
+//     include: [{
+//       model: Category,
+//       as: 'Category',
+//       where: { '$Category.slug$': category },
+//       attributes: ['slug'],
+//     }, {
+//       model: BookAuthor,
+//       as: 'BookAuthor',
+//       attributes: ['id', 'name'],
+//     }, {
+//       model: BookImage,
+//       as: 'BookImages',
+//       attributes: ['name'],
+//     }],
+//     ...pagination,
+//     order: [
+//       order,
+//     ],
+//     attributes: showedFieldsArray,
+//     where: { [Op.and]: [{ publish: true }, { id: { [Op.ne]: null } }, ...request] },
+//   })
+//     .then((data) => {
+//       response.data = data;
+//       console.log(data);
+//       return success(response);
+//     })
+//     .catch((err) => reject(Error(err.message || 'BookController findAll by category error')));
+//   Book.count({
+//     include: [{
+//       model: Category,
+//       where: { '$Category.slug$': category },
+//       as: 'Category',
+//       attributes: ['slug'],
+//     }, {
+//       model: BookAuthor,
+//       as: 'BookAuthor',
+//       attributes: ['id', 'name'],
+//     }],
+//     where: { [Op.and]: [{ publish: true }, ...request] },
+//   }).then((count) => {
+//     if (count) response.count = count;
+//   });
+// });
+
 module.exports.findUnpublishedBooks = () => new Promise((success, reject) => {
   Book.findAll({
-    where: { publish: { [Op.eq]: false } },
     attributes: showedFieldsArray,
-    include: [{
-      model: Category,
-      as: 'Category',
-      attributes: ['slug'],
-    }, {
-      model: BookAuthor,
-      as: 'BookAuthor',
-      attributes: ['id', 'name'],
-    }, {
-      model: BookImage,
-      as: 'BookImages',
-      attributes: ['name'],
-    }],
     order: [
       ['id', 'ASC'],
     ],
-  })
-    .then((data) => success(data))
-    .catch((err) => reject(Error(err.message || 'BookController unpublished books error')));
-});
-
-module.exports.findAllByCategorySlug = (category, options) => new Promise((success, reject) => {
-  const { request, order, pagination } = queryRequestDatabaseObject(options, true);
-  const response = {};
-  Book.count({
-    where: { [Op.and]: [{ publish: true }, { '$Category.slug$': category }, ...request] },
-    include: [{
-      model: Category,
-      as: 'Category',
-      attributes: ['slug'],
-    }, {
-      model: BookAuthor,
-      as: 'BookAuthor',
-      attributes: ['id', 'name'],
-    }],
-    subQuery: false,
-  }).then((count) => {
-    if (count) response.count = count;
-  });
-  Book.findAll({
-    where: { [Op.and]: [{ publish: true }, { '$Category.slug$': category }, ...request] },
-    attributes: showedFieldsArray,
     include: [{
       model: Category,
       as: 'Category',
@@ -201,17 +208,10 @@ module.exports.findAllByCategorySlug = (category, options) => new Promise((succe
       as: 'BookImages',
       attributes: ['name'],
     }],
-    order: [
-      order,
-    ],
-    subQuery: false,
-    ...pagination,
+    where: { publish: { [Op.eq]: false } },
   })
-    .then((data) => {
-      response.data = data;
-      return success(response);
-    })
-    .catch((err) => reject(Error(err.message || 'BookController findAll by category error')));
+    .then((data) => success(data))
+    .catch((err) => reject(Error(err.message || 'BookController unpublished books error')));
 });
 
 module.exports.findBookById = (id) => new Promise((success, reject) => {

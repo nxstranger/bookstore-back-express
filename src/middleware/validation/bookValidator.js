@@ -9,5 +9,19 @@ module.exports.bookQueryValidator = (req, res, next) => {
       return;
     }
   }
+  const {
+    page,
+    author_id: authorId,
+    price_from: priceFrom,
+    price_to: priceTo,
+  } = req.query;
+  if (
+    (page && !Number.isInteger(+page))
+    || (authorId && !Number.isInteger(+authorId))
+    || (priceFrom && !Number.isInteger(+priceFrom))
+    || (priceTo && !Number.isInteger(+priceTo))) {
+    res.status(400).json({ message: 'wrong query' });
+    return;
+  }
   next();
 };

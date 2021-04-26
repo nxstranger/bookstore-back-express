@@ -2,7 +2,8 @@ const categoryController = require('../../sequelize/controller/categoryControlle
 
 module.exports.create = (req, res) => {
   if (!(req.body && req.body.title && req.body.slug)) {
-    res.status(500).json({ message: 'payload - error' });
+    res.status(400).json({ message: 'Payload error' });
+    return;
   }
   const payload = {
     title: req.body.title,
@@ -10,13 +11,19 @@ module.exports.create = (req, res) => {
   };
   categoryController.create(payload)
     .then((data) => res.status(201).json(data))
-    .catch((err) => res.status(500).json({ message: err.message || 'Create - error' }));
+    .catch((err) => {
+      console.log(err.message);
+      return req.status(500).json({ message: 'Create - error' });
+    });
 };
 
 module.exports.getAllCategories = (req, res) => {
   categoryController.findAll()
     .then((data) => res.status(200).json(data))
-    .catch((err) => req.status(500).json({ message: err.message || 'could not get categories' }));
+    .catch((err) => {
+      console.log(err.message);
+      return req.status(500).json({ message: 'Could not get categories' });
+    });
 };
 
 module.exports.deleteCategory = (req, res) => {
@@ -28,9 +35,10 @@ module.exports.deleteCategory = (req, res) => {
           .json({});
       }
       return res.status(404)
-        .json({ message: 'not found id' });
+        .json({ message: 'Not found id' });
     })
     .catch((err) => {
-      res.status(400).json({ message: err.message });
+      console.log(err.message);
+      res.status(500).json({ message: 'Delete error' });
     });
 };

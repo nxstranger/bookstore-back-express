@@ -3,6 +3,7 @@ const authorController = require('../../sequelize/controller/authorController');
 module.exports.create = (req, res) => {
   if (!(req.body && req.body.name)) {
     res.status(500).json({ message: 'payload - error' });
+    return;
   }
   const payload = {
     name: req.body.name,

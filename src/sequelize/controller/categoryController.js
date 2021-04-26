@@ -1,4 +1,3 @@
-const { Op } = require('sequelize');
 const dbORM = require('../models/index');
 
 const { Category } = dbORM;

@@ -7,12 +7,31 @@ module.exports.validateAccessAdmin = (req, res, next) => {
     .then((userId) => ormUserController.findUserRole(userId))
     .then((user) => {
       if (user && user.role === 2) {
-        next();
-      } else {
-        res.status(401).json({ message: 'U are not admin' });
+        return next();
       }
+      return res.status(401).json({ message: 'U are not admin' });
     })
-    .catch((err) => res.status(403).json({ message: err }));
+    .catch((err) => {
+      console.log(err.message);
+      return res.status(403).json({ message: 'Validate user server error' });
+    });
+};
+
+module.exports.validateTokenAndUserExist = (req, res, next) => {
+  const { token } = res.locals;
+  jwtUtils.jwtVerifyAccess(token)
+    .then((userId) => ormUserController.findUserRole(userId))
+    .then((user) => {
+      if (user && user.id) {
+        res.locals.userId = +user.id;
+        return next();
+      }
+      return res.status(401).json({ message: 'User fot found' });
+    })
+    .catch((err) => {
+      console.log(err.message);
+      return res.status(403).json({ message: 'Validate user server error' });
+    });
 };
 
 module.exports.validateTokenAccess = (req, res, next) => {
@@ -30,7 +49,10 @@ module.exports.validateTokenAccess = (req, res, next) => {
       }
       res.status(401).json({ message: 'Unauthorized' });
     })
-    .catch((err) => res.status(403).json({ message: err }));
+    .catch((err) => {
+      console.log(err.message);
+      res.status(403).json({ message: 'Validate user server error' });
+    });
 };
 
 module.exports.checkAccessTokenInHeader = (req, res, next) => {

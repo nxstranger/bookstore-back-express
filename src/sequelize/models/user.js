@@ -29,6 +29,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         onDelete: 'CASCADE',
       });
+      this.hasMany(models.Order, {
+        foreignKey: 'userId',
+      });
+      this.hasMany(models.Cart, {
+        foreignKey: 'userId',
+      });
     }
   }
   User.init({

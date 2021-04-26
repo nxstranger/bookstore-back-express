@@ -102,42 +102,41 @@ module.exports.findBooks = (options, categorySlug = '') => new Promise((success,
     },
   }).then((count) => {
     response.count = count || 0;
-  });
-  Book.findAll({
-    include: [{
-      model: Category,
-      as: 'Category',
-      attributes: ['id', 'slug'],
-      where: (!category || category === 'all') ? {} : { slug: category },
-    }, {
-      model: BookAuthor,
-      as: 'BookAuthor',
-      attributes: ['id', 'name'],
-      where: (!authorId || authorId === 'all') ? {} : { id: authorId },
-    }, {
-      model: BookImage,
-      as: 'BookImages',
-      attributes: ['name'],
-    }],
-    limit: paginationLimit,
-    offset: (page && (+page > 1)) ? ((+page - 1) * paginationLimit) : 0,
-    attributes: showedFieldsArray,
-    order: [
-      getOrdering(ordering),
-    ],
-    where: {
-      publish: true,
-      price: {
-        [Op.between]: [
-          +priceFrom || 0,
-          +priceTo || 10000],
+    return Book.findAll({
+      include: [{
+        model: Category,
+        as: 'Category',
+        attributes: ['id', 'slug'],
+        where: (!category || category === 'all') ? {} : { slug: category },
+      }, {
+        model: BookAuthor,
+        as: 'BookAuthor',
+        attributes: ['id', 'name'],
+        where: (!authorId || authorId === 'all') ? {} : { id: authorId },
+      }, {
+        model: BookImage,
+        as: 'BookImages',
+        attributes: ['name'],
+      }],
+      limit: paginationLimit,
+      offset: (page && (+page > 1)) ? ((+page - 1) * paginationLimit) : 0,
+      attributes: showedFieldsArray,
+      order: [
+        getOrdering(ordering),
+      ],
+      where: {
+        publish: true,
+        price: {
+          [Op.between]: [
+            +priceFrom || 0,
+            +priceTo || 10000],
+        },
       },
-    },
+    });
+  }).then((data) => {
+    response.data = data;
+    return success(response);
   })
-    .then((data) => {
-      response.data = data;
-      return success(response);
-    })
     .catch((err) => reject(Error(err.message || 'BookController findAll error')));
 });
 

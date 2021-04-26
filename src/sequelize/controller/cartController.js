@@ -18,6 +18,21 @@ module.exports.create = (data) => {
   });
 };
 
+module.exports.findCartWithOrderIdNull = (userId) => new Promise(
+  (success, reject) => {
+    Cart.findAll({
+      where: {
+        orderId: null, userId,
+      },
+    })
+      .then((data) => success(data))
+      .catch((err) => {
+        console.log(err.message);
+        reject(Error('Cart controller - find cart error'));
+      });
+  },
+);
+
 module.exports.findCartByBookIdWhereOrderNull = (userId, bookId) => new Promise(
   (success, reject) => {
     Cart.findAll({
@@ -59,6 +74,18 @@ module.exports.getUsersCart = (userId) => new Promise((success, reject) => {
       console.log(err.message);
       reject(Error('Cart controller findAll error'));
     });
+});
+
+module.exports.bindOrder = (orderId, userId) => new Promise((success, reject) => {
+  Cart.update({ orderId }, { where: { userId, orderId: null } })
+    .then((num) => {
+      if (num[0] > 0) {
+        success();
+      } else {
+        reject(Error('Not updated'));
+      }
+    })
+    .catch((err) => reject(Error(err.message || 'Update error')));
 });
 
 module.exports.update = (userId, bookId, cartData) => new Promise((success, reject) => {

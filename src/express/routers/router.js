@@ -4,12 +4,14 @@ const routerBookCRUD = require('express').Router();
 const routerAuthorization = require('express').Router();
 const routerBookAuthor = require('express').Router();
 const routerCart = require('express').Router();
+const routerOrder = require('express').Router();
 const usersController = require('../../middleware/controllers/mwUserController');
 const authController = require('../../middleware/controllers/mwAuthController');
 const categoryController = require('../../middleware/controllers/mwCategoryController');
 const bookController = require('../../middleware/controllers/mwBookController');
 const bookAuthorController = require('../../middleware/controllers/mwAuthorController');
 const cartController = require('../../middleware/controllers/mwCartController');
+const orderController = require('../../middleware/controllers/mwOrderController');
 const { bookQueryValidator } = require('../../middleware/validation/bookValidator');
 const {
   checkAccessTokenInHeader,
@@ -63,4 +65,9 @@ module.exports = (app) => {
   routerCart.put('/', checkAccessTokenInHeader, validateTokenAndUserExist, cartController.update);
   routerCart.delete('/', checkAccessTokenInHeader, validateTokenAndUserExist, cartController.delete);
   app.use('/api/cart', routerCart);
+
+  // Order
+  routerOrder.get('/', checkAccessTokenInHeader, validateTokenAndUserExist, orderController.getOrders);
+  routerOrder.post('/', checkAccessTokenInHeader, validateTokenAndUserExist, orderController.create);
+  app.use('/api/order/', routerOrder);
 };

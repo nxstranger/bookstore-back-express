@@ -1,6 +1,6 @@
 const dbORM = require('../models/index');
 
-const { Order, Cart, Book, User } = dbORM;
+const { Cart, Book, BookImage } = dbORM;
 
 module.exports.create = (data) => {
   const newCart = {
@@ -18,9 +18,35 @@ module.exports.create = (data) => {
   });
 };
 
+module.exports.findCartByBookIdWhereOrderNull = (userId, bookId) => new Promise(
+  (success, reject) => {
+    Cart.findAll({
+      include: [{
+        model: Book,
+        as: 'Book',
+      }],
+      where: {
+        orderId: null, userId, bookId,
+      },
+    })
+      .then((data) => success(data))
+      .catch((err) => {
+        console.log(err.message);
+        reject(Error('Cart controller findAll error'));
+      });
+  },
+);
+
 module.exports.getUsersCart = (userId) => new Promise((success, reject) => {
   Cart.findAll({
     include: [{
+      include: [
+        {
+          model: BookImage,
+          as: 'BookImages',
+          attributes: ['name'],
+        },
+      ],
       model: Book,
       as: 'Book',
     }],
@@ -35,7 +61,6 @@ module.exports.getUsersCart = (userId) => new Promise((success, reject) => {
     });
 });
 
-// userId from jwt, cart data: { bookId, count }
 module.exports.update = (userId, bookId, cartData) => new Promise((success, reject) => {
   Cart.update(cartData, { where: { userId, bookId, orderId: null } })
     .then((num) => {

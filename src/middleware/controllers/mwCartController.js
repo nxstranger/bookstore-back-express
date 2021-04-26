@@ -10,7 +10,13 @@ module.exports.create = (req, res) => {
     bookId: req.body.bookId,
     count: 1,
   };
-  cartController.create(payload)
+  cartController.findCartByBookIdWhereOrderNull(+res.locals.userId, +req.body.bookId)
+    .then((data) => {
+      if (data.length) {
+        throw new Error();
+      }
+      return cartController.create(payload);
+    })
     .then((data) => res.status(201).json(data))
     .catch((err) => {
       console.log(err.message);

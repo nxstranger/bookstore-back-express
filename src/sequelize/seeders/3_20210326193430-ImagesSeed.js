@@ -19,7 +19,6 @@ module.exports = {
       'Books',
       { where: { id: { [Op.ne]: null } }, attributes: ['id', 'media'] },
     );
-    console.log(books);
     if (books.length) {
       const tempArray = [];
       books.forEach((bookObj) => {

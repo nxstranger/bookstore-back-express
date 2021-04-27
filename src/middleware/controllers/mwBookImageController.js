@@ -46,7 +46,6 @@ module.exports.getImagesOfBook = (req, res) => {
 
 module.exports.deleteImage = (req, res) => {
   const { imageId } = req.params;
-  // let bookMedia = '';
   bookImageController.findImageByPK(imageId)
     .then((data) => {
       fs.unlinkSync(path.resolve('media', data.Book.media, `${data.name}${prefixSmall}`));

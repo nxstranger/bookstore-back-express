@@ -58,13 +58,13 @@ module.exports.update = (req, res) => {
   }
   ormUserController.update(allowedFields, id)
     .then(() => {
-      res.status(200).json({ message: 'updated' });
+      res.status(200).json({ message: 'Updated' });
     },
-    (err) => {
-      res.status(400).json({ message: err.message });
+    () => {
+      res.status(400).json({ message: 'Not updated' });
     })
-    .catch((err) => {
-      res.status(400).json({ message: err.message });
+    .catch(() => {
+      res.status(400).json({ message: 'Not updated' });
     });
 };
 
@@ -75,9 +75,9 @@ module.exports.delete = (req, res) => {
       if (num) {
         return res.status(204).json({});
       }
-      return res.status(404).json({ message: 'not found id' });
+      return res.status(404).json({ message: 'Not found id' });
     })
-    .catch((err) => {
-      res.status(400).json({ message: err.message });
+    .catch(() => {
+      res.status(400).json({ message: 'Delete error' });
     });
 };

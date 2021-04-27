@@ -10,15 +10,15 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-const dbORM = require('../sequelize/models/index');
+// const dbORM = require('../sequelize/models/index');
 
-dbORM.sequelize.sync({
-  force: (process.env.NODE_ENV !== 'production'),
-})
-  // eslint-disable-next-line no-console
-  .then(() => console.log('db sync success'))
-  // eslint-disable-next-line no-console
-  .catch((err) => console.log(err));
+// dbORM.sequelize.sync({
+//   force: (process.env.NODE_ENV !== 'production'),
+// })
+//   // eslint-disable-next-line no-console
+//   .then(() => console.log('db sync success'))
+//   // eslint-disable-next-line no-console
+//   .catch((err) => console.log(err));
 
 app.use(express.static('media'));
 

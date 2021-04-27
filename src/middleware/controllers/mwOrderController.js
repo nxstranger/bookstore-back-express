@@ -20,5 +20,5 @@ module.exports.create = (req, res) => {
 module.exports.getOrders = (req, res) => {
   orderController.getUserOrders(res.locals.userId)
     .then((data) => res.status(200).json(data))
-    .catch((err) => res.status(404).json({ message: err.message || 'could not get orders' }));
+    .catch(() => res.status(404).json({ message: 'Could not get orders' }));
 };

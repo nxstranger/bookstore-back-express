@@ -13,20 +13,20 @@ module.exports.getBookById = (req, res) => {
   const { id } = req.params;
   bookController.findBookById(+id)
     .then((data) => res.status(200).json(data))
-    .catch((err) => res.status(404).json({ message: err.message || 'could not get book' }));
+    .catch(() => res.status(404).json({ message: 'could not get book' }));
 };
 
 module.exports.getBooks = (req, res) => {
   bookController.findBooks({ ...req.query })
     .then((data) => res.status(200).json(data))
-    .catch((err) => res.status(404).json({ message: err.message || 'could not get all books' }));
+    .catch(() => res.status(404).json({ message: 'could not get all books' }));
 };
 
 module.exports.getBooksByCategorySlug = (req, res) => {
   const { catSlug } = req.params;
   bookController.findBooks({ ...req.query }, catSlug)
     .then((data) => res.status(200).json(data))
-    .catch((err) => res.status(404).json({ message: err.message || 'could not get books by category' }));
+    .catch(() => res.status(404).json({ message: 'could not get books by category' }));
 };
 
 module.exports.getBook = (req, res) => {
@@ -35,7 +35,7 @@ module.exports.getBook = (req, res) => {
   const bookSlug = book.split('_')[1];
   bookController.findBookBySlug(bookId, bookSlug)
     .then((data) => res.status(200).json(data))
-    .catch((err) => res.status(404).json({ message: err.message || 'could not get book' }));
+    .catch(() => res.status(404).json({ message: 'could not get book' }));
 };
 
 module.exports.updateBookInfo = (req, res) => {
@@ -51,20 +51,6 @@ module.exports.updateBookInfo = (req, res) => {
       () => { res.status(200).json({ message: 'updated' }); },
       (err) => { res.status(400).json({ message: err.message }); },
     )
-    .catch((err) => {
-      res.status(400).json({ message: err.message });
-    });
-};
-
-module.exports.deleteCategory = (req, res) => {
-  const { id } = req.params;
-  bookController.delete(id)
-    .then((num) => {
-      if (num) {
-        return res.status(204).json({});
-      }
-      return res.status(404).json({ message: 'not found id' });
-    })
     .catch((err) => {
       res.status(400).json({ message: err.message });
     });

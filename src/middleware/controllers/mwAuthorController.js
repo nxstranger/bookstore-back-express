@@ -10,20 +10,20 @@ module.exports.create = (req, res) => {
   };
   authorController.create(payload)
     .then((data) => res.status(201).json(data))
-    .catch((err) => res.status(500).json({ message: err.message || 'Create - error' }));
+    .catch(() => res.status(500).json({ message: 'Create - error' }));
 };
 
 module.exports.getAuthorsStartedWith = (req, res) => {
   const { head } = req.params;
   authorController.findStartingWith(head)
     .then((data) => res.status(200).json(data))
-    .catch((err) => req.status(500).json({ message: err.message || 'could not get authors' }));
+    .catch(() => req.status(500).json({ message: 'Could not get authors' }));
 };
 
 module.exports.getAllAuthors = (req, res) => {
   authorController.findAll()
     .then((data) => res.status(200).json(data))
-    .catch((err) => req.status(500).json({ message: err.message || 'could not get authors' }));
+    .catch(() => req.status(500).json({ message: 'Could not get authors' }));
 };
 
 module.exports.deleteAuthor = (req, res) => {
@@ -35,7 +35,7 @@ module.exports.deleteAuthor = (req, res) => {
       }
       return res.status(404).json({ message: 'not found id' });
     })
-    .catch((err) => {
-      res.status(400).json({ message: err.message });
+    .catch(() => {
+      res.status(400).json({ message: 'Delete - error' });
     });
 };

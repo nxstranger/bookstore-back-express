@@ -159,7 +159,12 @@ module.exports.findUnpublishedBooks = () => new Promise((success, reject) => {
       as: 'BookImages',
       attributes: ['name'],
     }],
-    where: { publish: { [Op.eq]: false } },
+    where: {
+      [Op.or]: {
+        publish: { [Op.eq]: false },
+        category: { [Op.eq]: null },
+      },
+    },
   })
     .then((data) => success(data))
     .catch((err) => reject(Error(err.message || 'BookController unpublished books error')));

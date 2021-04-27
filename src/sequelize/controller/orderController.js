@@ -1,7 +1,10 @@
 const { Op } = require('sequelize');
 const dbORM = require('../models/index');
 
-const { Order, Cart } = dbORM;
+const { Order, Cart, Book } = dbORM;
+
+const bookOrderAttributes = ['id', 'title', 'price', 'description', 'media', 'slug'];
+const cartOrderAttributes = ['id', 'bookId', 'count'];
 
 module.exports.create = (userId) => {
   const order = {
@@ -22,6 +25,12 @@ module.exports.getUserOrders = (userId) => new Promise((success, reject) => {
       include: [{
         model: Cart,
         as: 'Carts',
+        attributes: cartOrderAttributes,
+        include: [{
+          model: Book,
+          as: 'Book',
+          attributes: bookOrderAttributes,
+        }],
         where: { orderId: { [Op.ne]: null } },
       }],
       where: { userId },

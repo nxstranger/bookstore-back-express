@@ -34,13 +34,13 @@ module.exports.login = (req, res) => {
         );
         dbToken.setToken(user.id, tokenTail)
           .then(() => res.status(200).json({ access: `Bearer ${accessToken}`, refresh: `Bearer ${refreshToken}`, id: user.id }))
-          .catch((err) => res.status(500).json({ message: err.message || 'Internal server error.' }));
+          .catch(() => res.status(500).json({ message: 'Error' }));
       } else {
-        res.status(401).json({ message: 'wrong password' });
+        res.status(401).json({ message: 'Wrong password' });
       }
     })
-    .catch((err) => {
-      res.status(500).json({ message: err.message || 'Internal server error.' });
+    .catch(() => {
+      res.status(500).json({ message: 'Error' });
     });
 };
 
@@ -82,7 +82,7 @@ module.exports.refreshToken = (req, res) => {
         res.status(401).json({ message: 'Unauthorized' });
       }
     })
-    .catch((err) => res.status(401).json({ message: err }));
+    .catch(() => res.status(401).json({ message: 'Error' }));
 };
 
 module.exports.getUserInfoByToken = (req, res) => {
@@ -90,8 +90,8 @@ module.exports.getUserInfoByToken = (req, res) => {
   jwtUtils.jwtVerifyAccess(token)
     .then((userId) => ormUserController.findOneById(userId))
     .then((data) => res.status(200).json(data))
-    .catch((err) => {
-      res.status(400).json({ message: err.message });
+    .catch(() => {
+      res.status(500).json({ message: 'Error' });
     });
 };
 
@@ -100,7 +100,7 @@ module.exports.getUserRoleByToken = (req, res) => {
   jwtUtils.jwtVerifyAccess(token)
     .then((userId) => ormUserController.findUserRole(userId))
     .then((data) => res.status(200).json(data))
-    .catch((err) => {
-      res.status(400).json({ message: err.message });
+    .catch(() => {
+      res.status(500).json({ message: 'Error' });
     });
 };

@@ -23,12 +23,12 @@ create (or copy) media folder on app
 
 admin user
 
-    Lolo@pepe.lo
+    lolo@pepe.lo
     Lolkeklol1
 
 users
 
-    email1@fake.fk
+    email0@fake.fk
     password0
     ....
     email19@fake.fk

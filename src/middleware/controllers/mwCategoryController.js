@@ -11,19 +11,13 @@ module.exports.create = (req, res) => {
   };
   categoryController.create(payload)
     .then((data) => res.status(201).json(data))
-    .catch((err) => {
-      console.log(err.message);
-      return req.status(500).json({ message: 'Create - error' });
-    });
+    .catch(() => res.status(500).json({ message: 'Create - error' }));
 };
 
 module.exports.getAllCategories = (req, res) => {
   categoryController.findAll()
     .then((data) => res.status(200).json(data))
-    .catch((err) => {
-      console.log(err.message);
-      return req.status(500).json({ message: 'Could not get categories' });
-    });
+    .catch(() => res.status(500).json({ message: 'Could not get categories' }));
 };
 
 module.exports.deleteCategory = (req, res) => {
@@ -37,8 +31,5 @@ module.exports.deleteCategory = (req, res) => {
       return res.status(404)
         .json({ message: 'Not found id' });
     })
-    .catch((err) => {
-      console.log(err.message);
-      res.status(500).json({ message: 'Delete error' });
-    });
+    .catch(() => res.status(500).json({ message: 'Delete error' }));
 };

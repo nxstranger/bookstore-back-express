@@ -17,13 +17,13 @@ module.exports.getAuthorsStartedWith = (req, res) => {
   const { head } = req.params;
   authorController.findStartingWith(head)
     .then((data) => res.status(200).json(data))
-    .catch(() => req.status(500).json({ message: 'Could not get authors' }));
+    .catch(() => res.status(500).json({ message: 'Could not get authors' }));
 };
 
 module.exports.getAllAuthors = (req, res) => {
   authorController.findAll()
     .then((data) => res.status(200).json(data))
-    .catch(() => req.status(500).json({ message: 'Could not get authors' }));
+    .catch(() => res.status(500).json({ message: 'Could not get authors' }));
 };
 
 module.exports.deleteAuthor = (req, res) => {

@@ -15,15 +15,17 @@
     "multer": "^1.4.2",
     "nanoid": "^3.1.22",
     "pg": "^8.5.1",
+    "pm2": "^4.5.6",
     "sequelize": "^6.6.2",
     "sequelize-cli": "^6.2.0",
     "sharp": "^0.28.1"
   },
   "scripts": {
-    "start": "node ./src/express/server.js",
+    "start": "yarn pm2 start ./src/express/server.js -i 2",
+    "stop": "yarn pm2 stop all",
     "devel": "nodemon ./src/express/server.js",
-    "docup": "docker-compose up --build",
-    "docdw": "docker-compose down -v"
+    "dbup": "docker-compose up --build -d",
+    "dbdown": "docker-compose down -v"
   },
   "devDependencies": {
     "eslint": "^7.22.0",

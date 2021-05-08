@@ -14,7 +14,7 @@ module.exports.create = (data) => {
       .then((res) => {
         success(res);
       })
-      .catch((err) => reject(err || 'Not created'));
+      .catch(() => reject(Error('Not created')));
   });
 };
 
@@ -26,8 +26,7 @@ module.exports.findCartWithOrderIdNull = (userId) => new Promise(
       },
     })
       .then((data) => success(data))
-      .catch((err) => {
-        console.log(err.message);
+      .catch(() => {
         reject(Error('Cart controller - find cart error'));
       });
   },
@@ -36,17 +35,13 @@ module.exports.findCartWithOrderIdNull = (userId) => new Promise(
 module.exports.findCartByBookIdWhereOrderNull = (userId, bookId) => new Promise(
   (success, reject) => {
     Cart.findAll({
-      include: [{
-        model: Book,
-        as: 'Book',
-      }],
+      order: [['id', 'ASC']],
       where: {
         orderId: null, userId, bookId,
       },
     })
       .then((data) => success(data))
-      .catch((err) => {
-        console.log(err.message);
+      .catch(() => {
         reject(Error('Cart controller findAll error'));
       });
   },
@@ -70,8 +65,7 @@ module.exports.getUsersCart = (userId) => new Promise((success, reject) => {
     },
   })
     .then((data) => success(data))
-    .catch((err) => {
-      console.log(err.message);
+    .catch(() => {
       reject(Error('Cart controller findAll error'));
     });
 });

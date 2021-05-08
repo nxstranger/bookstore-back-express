@@ -33,6 +33,9 @@ module.exports = {
         },
         onDelete: 'CASCADE',
       },
+      count: {
+        type: Sequelize.INTEGER,
+      },
     });
   },
   down: async (queryInterface) => {

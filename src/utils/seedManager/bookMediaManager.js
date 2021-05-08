@@ -39,3 +39,8 @@ module.exports.createFolder = (folderName) => {
 module.exports.getSlugFromDirname = (dirname) => dirname.split('_')[1];
 
 module.exports.getPosterPath = (dirname) => path.join(dirname);
+
+module.exports.getBookFolderFullPath = (folderName) => {
+  const fullPath = path.join(mediaPath, folderName);
+  return fullPath;
+};

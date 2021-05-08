@@ -1,3 +1,6 @@
+const fs = require('fs');
+const { getBookFolderFullPath } = require('../../utils/seedManager/bookMediaManager');
+
 const bookController = require('../../sequelize/controller/bookController');
 
 const updateBookAllowedFields = ['title', 'slug', 'description', 'price', 'publish', 'category', 'author'];
@@ -59,5 +62,23 @@ module.exports.updateBookInfo = (req, res) => {
 module.exports.getUnpublishedBooks = (req, res) => {
   bookController.findUnpublishedBooks()
     .then((data) => res.status(200).json(data))
-    .catch((err) => res.status(404).json({ message: err.message || 'could not get books' }));
+    .catch((err) => res.status(404).json({ message: err.message || 'Could not get books' }));
+};
+
+module.exports.deleteUnpublishedBookById = (req, res) => {
+  let bookFolder = '';
+  bookController.findBookById(req.params.id)
+    .then((book) => {
+      if (!book) {
+        res.status(404).json({ message: 'Not deleted' });
+      } else {
+        bookFolder = book.media;
+        bookController.delete(req.params.id)
+          .then(() => {
+            fs.rmSync(getBookFolderFullPath(bookFolder), { recursive: true });
+            res.status(200).json({ message: 'Success' });
+          });
+      }
+    })
+    .catch(() => res.status(500).json({ message: 'Not deleted' }));
 };

@@ -203,7 +203,7 @@ module.exports.findBookBySlug = (id, slug) => new Promise((success, reject) => {
 });
 
 module.exports.delete = (id) => new Promise((success, reject) => {
-  Book.destroy({ where: { id } })
+  Book.destroy({ where: { id, publish: false } })
     .then((num) => success(num))
     .catch((err) => reject(Error(err.message || 'Delete error')));
 });

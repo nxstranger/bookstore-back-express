@@ -18,10 +18,7 @@ module.exports.create = (req, res) => {
       return cartController.create(payload);
     })
     .then((data) => res.status(201).json(data))
-    .catch((err) => {
-      console.log(err.message);
-      res.status(500).json({ message: 'Create - error' });
-    });
+    .catch((err) => res.status(500).json({ message: err.message || 'Create - error' }));
 };
 
 module.exports.getUserCart = (req, res) => {

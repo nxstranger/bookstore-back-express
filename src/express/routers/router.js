@@ -56,6 +56,7 @@ module.exports = (app) => {
   routerBookCRUD.get('/category/:catSlug', bookQueryValidator, bookController.getBooksByCategorySlug);
   routerBookCRUD.get('/unpublished', checkAccessTokenInHeader, validateAccessAdmin, bookController.getUnpublishedBooks);
   routerBookCRUD.put('/id/:id', checkAccessTokenInHeader, validateAccessAdmin, bookController.updateBookInfo);
+  routerBookCRUD.delete('/id/:id', checkAccessTokenInHeader, validateAccessAdmin, bookController.deleteUnpublishedBookById);
   routerBookCRUD.post('/', checkAccessTokenInHeader, validateAccessAdmin, bookController.createNewBook);
   app.use('/api/book', routerBookCRUD);
 

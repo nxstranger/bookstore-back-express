@@ -1,6 +1,6 @@
 ##  Bookstore on express
 
-### requirements:
+### Requirements:
 
 * docker
 * yarn
@@ -9,24 +9,35 @@ create (or copy) media folder on app
 
     appfolder
      |_media
-     |_src
+     |_server
+     |_app
      |...other files
 
-### run project
-    yarn docup
+### Run project
+#### 1. up db
+    yarn dbup
+    
+#### 2. migration & seed
+    yarn data
 
-### stop project
-    ctrl+C
-    yarn docdw
+#### 3. up server 
+    yarn start
 
-##test accounts
+### Stop project
+#### 1. down server 
+    yarn stop
 
-admin user
+#### 2. down db
+    yarn dbdown
+
+###Test accounts
+
+#### Admin user
 
     lolo@pepe.lo
     Lolkeklol1
 
-users
+#### Users
 
     email0@fake.fk
     password0

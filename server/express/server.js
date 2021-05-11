@@ -24,8 +24,8 @@ app.use((error, req, res, next) => {
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-require('./routers/imagesRouter')(app);
-require('./routers/router')(app);
+require('../../app/routers/imagesRouter')(app);
+require('../../app/routers/router')(app);
 
 app.use((req, res) => {
   res.status(404).json({ message: 'not found' });

@@ -21,9 +21,9 @@
     "sharp": "^0.28.1"
   },
   "scripts": {
-    "start": "yarn pm2 start ./src/express/server.js -i 2",
+    "start": "yarn pm2 start server/express/server.js -i 2",
     "stop": "yarn pm2 stop all",
-    "devel": "nodemon ./src/express/server.js",
+    "devel": "nodemon server/express/server.js",
     "dbdata": "yarn sequelize db:migrate && yarn sequelize db:seed:all",
     "dbup": "docker-compose up --build -d",
     "dbdown": "docker-compose down -v"

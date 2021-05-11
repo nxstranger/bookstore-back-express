@@ -1,8 +1,8 @@
 const multer = require('multer');
 const routerBookImage = require('express').Router();
-const multerConfig = require('../middleware/milter/config');
-const { validateAccessAdmin, checkAccessTokenInHeader } = require('../middleware/validation/accessJwtMiddleware');
-const mwBookImageController = require('../middleware/controllers/mwBookImageController');
+const multerConfig = require('../../app/middleware/milter/config');
+const { validateAccessAdmin, checkAccessTokenInHeader } = require('../../app/middleware/validation/accessJwtMiddleware');
+const mwBookImageController = require('../../app/middleware/controllers/mwBookImageController');
 
 const storage = multer.memoryStorage();
 

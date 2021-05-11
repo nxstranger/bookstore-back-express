@@ -5,20 +5,20 @@ const routerAuthorization = require('express').Router();
 const routerBookAuthor = require('express').Router();
 const routerCart = require('express').Router();
 const routerOrder = require('express').Router();
-const usersController = require('../middleware/controllers/mwUserController');
-const authController = require('../middleware/controllers/mwAuthController');
-const categoryController = require('../middleware/controllers/mwCategoryController');
-const bookController = require('../middleware/controllers/mwBookController');
-const bookAuthorController = require('../middleware/controllers/mwAuthorController');
-const cartController = require('../middleware/controllers/mwCartController');
-const orderController = require('../middleware/controllers/mwOrderController');
-const { bookQueryValidator } = require('../middleware/validation/bookValidator');
+const usersController = require('../../app/middleware/controllers/mwUserController');
+const authController = require('../../app/middleware/controllers/mwAuthController');
+const categoryController = require('../../app/middleware/controllers/mwCategoryController');
+const bookController = require('../../app/middleware/controllers/mwBookController');
+const bookAuthorController = require('../../app/middleware/controllers/mwAuthorController');
+const cartController = require('../../app/middleware/controllers/mwCartController');
+const orderController = require('../../app/middleware/controllers/mwOrderController');
+const { bookQueryValidator } = require('../../app/middleware/validation/bookValidator');
 const {
   checkAccessTokenInHeader,
   validateTokenAccess,
   validateAccessAdmin,
   validateTokenAndUserExist,
-} = require('../middleware/validation/accessJwtMiddleware');
+} = require('../../app/middleware/validation/accessJwtMiddleware');
 
 module.exports = (app) => {
   // API user

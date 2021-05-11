@@ -2,16 +2,20 @@
 
 ### Requirements:
 
-* docker
-* yarn
+    1. docker
+    2. yarn
 
-create (or copy) media folder on app
+#### create (or copy) media folder on app
 
     appfolder
      |_media
      |_server
      |_app
      |...other files
+
+####install modules:
+
+    yarn install
 
 ### Run project
 #### 1. up db

@@ -171,7 +171,14 @@ module.exports.findUnpublishedBooks = () => new Promise((success, reject) => {
 });
 
 module.exports.findBookById = (id) => new Promise((success, reject) => {
-  Book.findByPk(id)
+  Book.findOne({
+    include: [{
+      model: BookImage,
+      as: 'BookImages',
+      attributes: ['name'],
+    }],
+    where: id,
+  })
     .then((data) => success(data))
     .catch((err) => reject(Error(err.message || 'Book controller find by id error')));
 });

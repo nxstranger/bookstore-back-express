@@ -10,11 +10,21 @@ const bookDirPool = mediaManager.getMediaDirs();
 
 const titles = [
   'bookTitle',
+  'Some Title',
   'some Title',
+  'some Book',
   'Title',
+  'Title1',
   'A Title',
+  'D Title',
+  'V Title',
+  'R Title',
   'z title',
+  'a title',
+  't title',
+  'u title',
   'super Book',
+  'Super Book',
 ];
 
 function randomInteger(min, max) {
@@ -24,7 +34,7 @@ function randomInteger(min, max) {
 
 function makeBookObj(dirname) {
   return {
-    title: titles[randomInteger(0, 5)],
+    title: titles[randomInteger(0, 15)],
     price: randomInteger(1, 1000),
     media: dirname,
     description: bookDescription,
